@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addStuff } from '../../../redux/userRelated/userHandle';
 import { underControl } from '../../../redux/userRelated/userSlice';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, TextField, Button, Stack, Typography } from '@mui/material';
 import Popup from '../../../components/Popup';
+import styled from 'styled-components';
 
 const AddNotice = () => {
   const dispatch = useDispatch();
@@ -43,39 +44,105 @@ const AddNotice = () => {
 
   return (
     <>
-      <div className="register">
-        <form className="registerForm" onSubmit={submitHandler}>
-          <span className="registerTitle">Add Notice</span>
-          <label>Title</label>
-          <input className="registerInput" type="text" placeholder="Enter notice title..."
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-            required />
-
-          <label>Details</label>
-          <input className="registerInput" type="text" placeholder="Enter notice details..."
-            value={details}
-            onChange={(event) => setDetails(event.target.value)}
-            required />
-
-          <label>Date</label>
-          <input className="registerInput" type="date" placeholder="Enter notice date..."
-            value={date}
-            onChange={(event) => setDate(event.target.value)}
-            required />
-
-          <button className="registerButton" type="submit" disabled={loader}>
-            {loader ? (
-              <CircularProgress size={24} color="inherit" />
-            ) : (
-              'Add'
-            )}
-          </button>
-        </form>
-      </div>
+      <StyledContainer>
+        <FormCard>
+          <Typography variant="h5" sx={{ fontWeight: 700, color: "#411d70", mb: 2, textAlign: "center" }}>
+            Add Notice
+          </Typography>
+          <form onSubmit={submitHandler}>
+            <Stack spacing={3}>
+              <TextField
+                label="Title"
+                variant="outlined"
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+                required
+                fullWidth
+              />
+              <TextField
+                label="Details"
+                variant="outlined"
+                value={details}
+                onChange={(event) => setDetails(event.target.value)}
+                required
+                fullWidth
+              />
+              <TextField
+                label="Date"
+                type="date"
+                variant="outlined"
+                value={date}
+                onChange={(event) => setDate(event.target.value)}
+                required
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <Button
+                fullWidth
+                size="large"
+                sx={{
+                  mt: 2,
+                  fontWeight: 600,
+                  borderRadius: "1rem",
+                  background: "linear-gradient(90deg, #7f56da 0%, #411d70 100%)",
+                  color: "#fff",
+                  boxShadow: "0 4px 16px 0 rgba(127,86,218,0.10)",
+                  '&:hover': {
+                    background: "linear-gradient(90deg, #411d70 0%, #7f56da 100%)",
+                  }
+                }}
+                variant="contained"
+                type="submit"
+                disabled={loader}
+              >
+                {loader ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  'Add'
+                )}
+              </Button>
+              <Button
+                variant="outlined"
+                fullWidth
+                sx={{
+                  borderRadius: "1rem",
+                  fontWeight: 600,
+                  color: "#7f56da",
+                  borderColor: "#7f56da",
+                  mt: 1
+                }}
+                onClick={() => navigate(-1)}
+              >
+                Cancel
+              </Button>
+            </Stack>
+          </form>
+        </FormCard>
+      </StyledContainer>
       <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
     </>
   );
 };
 
 export default AddNotice;
+
+const StyledContainer = styled.div`
+  flex: 1 1 auto;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 80vh;
+  background: linear-gradient(120deg, #f8f9fc 0%, #e9e6f7 100%);
+`;
+
+const FormCard = styled.div`
+  max-width: 500px;
+  width: 100%;
+  padding: 48px 2.5rem 40px;
+  background: linear-gradient(120deg, #fff 80%, #f3f0fa 100%);
+  box-shadow: 0 4px 24px 0 rgba(127,86,218,0.10);
+  border-radius: 1.5rem;
+  border: none;
+`;

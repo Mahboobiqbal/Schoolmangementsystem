@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { getClassDetails, getClassStudents, getSubjectList } from "../../../redux/sclassRelated/sclassHandle";
 import { deleteUser } from '../../../redux/userRelated/userHandle';
 import {
-    Box, Container, Typography, Tab, IconButton
+    Box, Container, Typography, Tab, IconButton, CircularProgress
 } from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -18,6 +18,7 @@ import SpeedDialTemplate from "../../../components/SpeedDialTemplate";
 import Popup from "../../../components/Popup";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PostAddIcon from '@mui/icons-material/PostAdd';
+import styled from "styled-components";
 
 const ClassDetails = () => {
     const params = useParams()
@@ -252,36 +253,44 @@ const ClassDetails = () => {
     return (
         <>
             {loading ? (
-                <div>Loading...</div>
+                <StyledLoading>
+                    <CircularProgress color="primary" />
+                </StyledLoading>
             ) : (
-                <>
-                    <Box sx={{ width: '100%', typography: 'body1', }} >
-                        <TabContext value={value}>
-                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                <TabList onChange={handleChange} sx={{ position: 'fixed', width: '100%', bgcolor: 'background.paper', zIndex: 1 }}>
-                                    <Tab label="Details" value="1" />
-                                    <Tab label="Subjects" value="2" />
-                                    <Tab label="Students" value="3" />
-                                    <Tab label="Teachers" value="4" />
-                                </TabList>
-                            </Box>
-                            <Container sx={{ marginTop: "3rem", marginBottom: "4rem" }}>
-                                <TabPanel value="1">
+                <DetailsContainer>
+                    <StyledTabContext value={value}>
+                        <StyledTabHeader>
+                            <TabList onChange={handleChange} sx={{ bgcolor: 'background.paper', borderRadius: '1.2rem 1.2rem 0 0', boxShadow: '0 2px 12px 0 rgba(127,86,218,0.06)' }}>
+                                <Tab label="Details" value="1" />
+                                <Tab label="Subjects" value="2" />
+                                <Tab label="Students" value="3" />
+                                <Tab label="Teachers" value="4" />
+                            </TabList>
+                        </StyledTabHeader>
+                        <StyledTabPanelContainer>
+                            <TabPanel value="1">
+                                <SectionCard>
                                     <ClassDetailsSection />
-                                </TabPanel>
-                                <TabPanel value="2">
+                                </SectionCard>
+                            </TabPanel>
+                            <TabPanel value="2">
+                                <SectionCard>
                                     <ClassSubjectsSection />
-                                </TabPanel>
-                                <TabPanel value="3">
+                                </SectionCard>
+                            </TabPanel>
+                            <TabPanel value="3">
+                                <SectionCard>
                                     <ClassStudentsSection />
-                                </TabPanel>
-                                <TabPanel value="4">
+                                </SectionCard>
+                            </TabPanel>
+                            <TabPanel value="4">
+                                <SectionCard>
                                     <ClassTeachersSection />
-                                </TabPanel>
-                            </Container>
-                        </TabContext>
-                    </Box>
-                </>
+                                </SectionCard>
+                            </TabPanel>
+                        </StyledTabPanelContainer>
+                    </StyledTabContext>
+                </DetailsContainer>
             )}
             <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
         </>
@@ -289,3 +298,45 @@ const ClassDetails = () => {
 };
 
 export default ClassDetails;
+
+// --- Styled Components ---
+const DetailsContainer = styled.div`
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 0 24px 0;
+`;
+
+const StyledTabContext = styled(TabContext)`
+  width: 100%;
+`;
+
+const StyledTabHeader = styled(Box)`
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: transparent;
+`;
+
+const StyledTabPanelContainer = styled(Container)`
+  background: linear-gradient(120deg, #fff 80%, #f3f0fa 100%);
+  border-radius: 0 0 1.5rem 1.5rem;
+  box-shadow: 0 4px 24px 0 rgba(127,86,218,0.08);
+  padding: 2rem 1.5rem 2.5rem 1.5rem;
+  min-height: 350px;
+`;
+
+const SectionCard = styled.div`
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px 0 rgba(127,86,218,0.06);
+  padding: 2rem 1.5rem;
+  margin-bottom: 2rem;
+`;
+
+const StyledLoading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 350px;
+`;

@@ -4,6 +4,7 @@ import { getSubjectList } from '../../redux/sclassRelated/sclassHandle';
 import { BottomNavigation, BottomNavigationAction, Container, Paper, Table, TableBody, TableHead, Typography } from '@mui/material';
 import { getUserDetails } from '../../redux/userRelated/userHandle';
 import CustomBarChart from '../../components/CustomBarChart'
+import { styled } from '@mui/system';
 
 import InsertChartIcon from '@mui/icons-material/InsertChart';
 import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
@@ -139,5 +140,11 @@ const StudentSubjects = () => {
         </>
     );
 };
+
+const Bg = styled('div')`
+  min-height: 100vh;
+  background: linear-gradient(120deg, #f8f9fc 0%, #e9e6f7 100%);
+  padding: 40px 0;
+`;
 
 export default StudentSubjects;

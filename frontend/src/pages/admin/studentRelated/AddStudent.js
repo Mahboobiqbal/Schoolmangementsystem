@@ -6,6 +6,7 @@ import Popup from '../../../components/Popup';
 import { underControl } from '../../../redux/userRelated/userSlice';
 import { getAllSclasses } from '../../../redux/sclassRelated/sclassHandle';
 import { CircularProgress } from '@mui/material';
+import styled from 'styled-components';
 
 const AddStudent = ({ situation }) => {
     const dispatch = useDispatch()
@@ -85,8 +86,8 @@ const AddStudent = ({ situation }) => {
     }, [status, navigate, error, response, dispatch]);
 
     return (
-        <>
-            <div className="register">
+        <StyledContainer>
+            <FormCard>
                 <form className="registerForm" onSubmit={submitHandler}>
                     <span className="registerTitle">Add Student</span>
                     <label>Name</label>
@@ -133,10 +134,29 @@ const AddStudent = ({ situation }) => {
                         )}
                     </button>
                 </form>
-            </div>
+            </FormCard>
             <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
-        </>
+        </StyledContainer>
     )
 }
 
 export default AddStudent
+
+const StyledContainer = styled.div`
+  flex: 1 1 auto;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 80vh;
+  background: linear-gradient(120deg, #f8f9fc 0%, #e9e6f7 100%);
+`;
+
+const FormCard = styled.div`
+  max-width: 500px;
+  width: 100%;
+  padding: 48px 2.5rem 40px;
+  background: linear-gradient(120deg, #fff 80%, #f3f0fa 100%);
+  box-shadow: 0 4px 24px 0 rgba(127,86,218,0.10);
+  border-radius: 1.5rem;
+  border: none;
+`;

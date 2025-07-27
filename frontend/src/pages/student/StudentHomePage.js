@@ -42,7 +42,7 @@ const StudentHomePage = () => {
         { name: 'Absent', value: overallAbsentPercentage }
     ];
     return (
-        <>
+        <Bg>
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={3} lg={3}>
@@ -98,7 +98,7 @@ const StudentHomePage = () => {
                     </Grid>
                 </Grid>
             </Container>
-        </>
+        </Bg>
     )
 }
 
@@ -129,6 +129,12 @@ const Title = styled.p`
 const Data = styled(CountUp)`
   font-size: calc(1.3rem + .6vw);
   color: green;
+`;
+
+const Bg = styled.div`
+  min-height: 100vh;
+  background: linear-gradient(120deg, #f8f9fc 0%, #e9e6f7 100%);
+  padding: 40px 0;
 `;
 
 

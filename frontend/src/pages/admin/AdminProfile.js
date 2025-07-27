@@ -7,99 +7,94 @@
 // import { Button, Collapse } from '@mui/material';
 
 import { useSelector } from 'react-redux';
+import { Avatar, Typography, Box } from '@mui/material';
+import styled from 'styled-components';
 
 const AdminProfile = () => {
-    // const [showTab, setShowTab] = useState(false);
-    // const buttonText = showTab ? 'Cancel' : 'Edit profile';
-
-    // const navigate = useNavigate()
-    // const dispatch = useDispatch();
-        const { currentUser } = useSelector((state) => state.user);
-    // const { currentUser, response, error } = useSelector((state) => state.user);
-    // const address = "Admin"
-
-    // if (response) { console.log(response) }
-    // else if (error) { console.log(error) }
-
-    // const [name, setName] = useState(currentUser.name);
-    // const [email, setEmail] = useState(currentUser.email);
-    // const [password, setPassword] = useState("");
-    // const [schoolName, setSchoolName] = useState(currentUser.schoolName);
-
-    // const fields = password === "" ? { name, email, schoolName } : { name, email, password, schoolName }
-
-    // const submitHandler = (event) => {
-    //     event.preventDefault()
-    //     dispatch(updateUser(fields, currentUser._id, address))
-    // }
-
-    // const deleteHandler = () => {
-    //     try {
-    //         dispatch(deleteUser(currentUser._id, "Students"));
-    //         dispatch(deleteUser(currentUser._id, address));
-    //         dispatch(authLogout());
-    //         navigate('/');
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
+    const { currentUser } = useSelector((state) => state.user);
 
     return (
-        <div>
-            Name: {currentUser.name}
-            <br />
-            Email: {currentUser.email}
-            <br />
-            School: {currentUser.schoolName}
-            <br />
-            {/* <Button variant="contained" color="error" onClick={deleteHandler}>Delete</Button> */}
-            {/* <Button variant="contained" sx={styles.showButton}
-                onClick={() => setShowTab(!showTab)}>
-                {showTab ? <KeyboardArrowUp /> : <KeyboardArrowDown />}{buttonText}
-            </Button>
-            <Collapse in={showTab} timeout="auto" unmountOnExit>
-                <div className="register">
-                    <form className="registerForm" onSubmit={submitHandler}>
-                        <span className="registerTitle">Edit Details</span>
-                        <label>Name</label>
-                        <input className="registerInput" type="text" placeholder="Enter your name..."
-                            value={name}
-                            onChange={(event) => setName(event.target.value)}
-                            autoComplete="name" required />
+        <ProfileContainer>
+            <ProfileCard>
+                <AvatarStyled>
+                    {currentUser.name ? currentUser.name.charAt(0).toUpperCase() : "A"}
+                </AvatarStyled>
+                <Typography variant="h5" sx={{ fontWeight: 700, color: "#411d70", mb: 1 }}>
+                    {currentUser.name}
+                </Typography>
+                <Typography variant="subtitle1" sx={{ color: "#7f56da", mb: 2 }}>
+                    {currentUser.schoolName}
+                </Typography>
+                <InfoBox>
+                    <Label>Email:</Label>
+                    <Value>{currentUser.email}</Value>
+                </InfoBox>
+                <InfoBox>
+                    <Label>School:</Label>
+                    <Value>{currentUser.schoolName}</Value>
+                </InfoBox>
+                {/* Add edit/delete buttons here if needed */}
+            </ProfileCard>
+        </ProfileContainer>
+    );
+};
 
-                        <label>School</label>
-                        <input className="registerInput" type="text" placeholder="Enter your school name..."
-                            value={schoolName}
-                            onChange={(event) => setSchoolName(event.target.value)}
-                            autoComplete="name" required />
+export default AdminProfile;
 
-                        <label>Email</label>
-                        <input className="registerInput" type="email" placeholder="Enter your email..."
-                            value={email}
-                            onChange={(event) => setEmail(event.target.value)}
-                            autoComplete="email" required />
+// --- Styled Components ---
+const ProfileContainer = styled.div`
+  width: 100%;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(120deg, #f8f9fc 0%, #e9e6f7 100%);
+`;
 
-                        <label>Password</label>
-                        <input className="registerInput" type="password" placeholder="Enter your password..."
-                            value={password}
-                            onChange={(event) => setPassword(event.target.value)}
-                            autoComplete="new-password" />
+const ProfileCard = styled(Box)`
+  background: linear-gradient(120deg, #fff 80%, #f3f0fa 100%);
+  box-shadow: 0 4px 24px 0 rgba(127,86,218,0.10);
+  border-radius: 1.5rem;
+  padding: 3rem 2.5rem 2.5rem 2.5rem;
+  min-width: 340px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
-                        <button className="registerButton" type="submit" >Update</button>
-                    </form>
-                </div>
-            </Collapse> */}
-        </div>
-    )
-}
+const AvatarStyled = styled(Avatar)`
+  && {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #7f56da 60%, #411d70 100%);
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 12px 0 rgba(127,86,218,0.15);
+  }
+`;
 
-export default AdminProfile
+const InfoBox = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 1rem;
+`;
 
-// const styles = {
-//     attendanceButton: {
-//         backgroundColor: "#270843",
-//         "&:hover": {
-//             backgroundColor: "#3f1068",
-//         }
-//     }
-// }
+const Label = styled(Typography).attrs({ variant: "body2" })`
+  && {
+    color: #7f56da;
+    font-weight: 600;
+    min-width: 70px;
+    margin-right: 8px;
+  }
+`;
+
+const Value = styled(Typography).attrs({ variant: "body2" })`
+  && {
+    color: #333;
+    font-weight: 500;
+    word-break: break-all;
+  }
+`;

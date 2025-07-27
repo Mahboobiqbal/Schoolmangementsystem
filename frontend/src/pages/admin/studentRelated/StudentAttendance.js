@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { getUserDetails } from '../../../redux/userRelated/userHandle';
 import { getSubjectList } from '../../../redux/sclassRelated/sclassHandle';
 import { updateStudentFields } from '../../../redux/studentRelated/studentHandle';
+import styled from 'styled-components';
 
 import {
     Box, InputLabel,
@@ -194,4 +195,22 @@ const StudentAttendance = ({ situation }) => {
     )
 }
 
+const StyledContainer = styled.div`
+  flex: 1 1 auto;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 80vh;
+  background: linear-gradient(120deg, #f8f9fc 0%, #e9e6f7 100%);
+`;
+
+const FormCard = styled.div`
+  max-width: 550px;
+  width: 100%;
+  padding: 48px 2.5rem 40px;
+  background: linear-gradient(120deg, #fff 80%, #f3f0fa 100%);
+  box-shadow: 0 4px 24px 0 rgba(127,86,218,0.10);
+  border-radius: 1.5rem;
+  border: none;
+`;
 export default StudentAttendance

@@ -56,11 +56,8 @@ const AddClass = () => {
     return (
         <>
             <StyledContainer>
-                <StyledBox>
-                    <Stack sx={{
-                        alignItems: 'center',
-                        mb: 3
-                    }}>
+                <FormCard>
+                    <Stack sx={{ alignItems: 'center', mb: 3 }}>
                         <img
                             src={Classroom}
                             alt="classroom"
@@ -93,7 +90,7 @@ const AddClass = () => {
                             </Button>
                         </Stack>
                     </form>
-                </StyledBox>
+                </FormCard>
             </StyledContainer>
             <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
         </>
@@ -107,14 +104,16 @@ const StyledContainer = styled(Box)`
   align-items: center;
   display: flex;
   justify-content: center;
+  min-height: 80vh;
+  background: linear-gradient(120deg, #f8f9fc 0%, #e9e6f7 100%);
 `;
 
-const StyledBox = styled(Box)`
-  max-width: 550px;
-  padding: 50px 3rem 50px;
-  margin-top: 1rem;
-  background-color: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  border: 1px solid #ccc;
-  border-radius: 4px;
+const FormCard = styled(Box)`
+  max-width: 500px;
+  width: 100%;
+  padding: 48px 2.5rem 40px;
+  background: linear-gradient(120deg, #fff 80%, #f3f0fa 100%);
+  box-shadow: 0 4px 24px 0 rgba(127,86,218,0.10);
+  border-radius: 1.5rem;
+  border: none;
 `;

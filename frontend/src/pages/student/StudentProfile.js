@@ -13,48 +13,34 @@ const StudentProfile = () => {
   const studentSchool = currentUser.school
 
   return (
-    <>
+    <ProfileBg>
       <Container maxWidth="md">
-        <StyledPaper elevation={3}>
+        <ProfileCard elevation={3}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Box display="flex" justifyContent="center">
-                <Avatar alt="Student Avatar" sx={{ width: 150, height: 150 }}>
+                <AvatarStyled>
                   {String(currentUser.name).charAt(0)}
-                </Avatar>
+                </AvatarStyled>
               </Box>
             </Grid>
             <Grid item xs={12}>
-              <Box display="flex" justifyContent="center">
-                <Typography variant="h5" component="h2" textAlign="center">
-                  {currentUser.name}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="center">
-                <Typography variant="subtitle1" component="p" textAlign="center">
-                  Student Roll No: {currentUser.rollNum}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="center">
-                <Typography variant="subtitle1" component="p" textAlign="center">
-                  Class: {sclassName.sclassName}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="center">
-                <Typography variant="subtitle1" component="p" textAlign="center">
-                  School: {studentSchool.schoolName}
-                </Typography>
-              </Box>
+              <Typography variant="h5" align="center" sx={{ fontWeight: 700, color: "#411d70" }}>
+                {currentUser.name}
+              </Typography>
+              <Typography variant="subtitle1" align="center" sx={{ color: "#7f56da" }}>
+                Roll No: {currentUser.rollNum}
+              </Typography>
+              <Typography variant="subtitle1" align="center" sx={{ color: "#7f56da" }}>
+                Class: {sclassName.sclassName}
+              </Typography>
+              <Typography variant="subtitle1" align="center" sx={{ color: "#7f56da" }}>
+                School: {studentSchool.schoolName}
+              </Typography>
             </Grid>
           </Grid>
-        </StyledPaper>
-        <Card>
+        </ProfileCard>
+        <Card sx={{ mt: 3, borderRadius: "1.5rem", boxShadow: "0 4px 24px 0 rgba(127,86,218,0.10)" }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>
               Personal Information
@@ -94,13 +80,32 @@ const StudentProfile = () => {
           </CardContent>
         </Card>
       </Container>
-    </>
+    </ProfileBg>
   )
 }
 
 export default StudentProfile
 
-const StyledPaper = styled(Paper)`
-  padding: 20px;
-  margin-bottom: 20px;
+const ProfileBg = styled.div`
+  min-height: 100vh;
+  background: linear-gradient(120deg, #f8f9fc 0%, #e9e6f7 100%);
+  padding: 40px 0;
+`;
+
+const ProfileCard = styled(Paper)`
+  padding: 32px 24px 24px 24px;
+  margin-bottom: 24px;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 4px 24px 0 rgba(127,86,218,0.10) !important;
+`;
+
+const AvatarStyled = styled(Avatar)`
+  && {
+    width: 110px;
+    height: 110px;
+    background: linear-gradient(135deg, #7f56da 60%, #411d70 100%);
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 12px 0 rgba(127,86,218,0.15);
+  }
 `;

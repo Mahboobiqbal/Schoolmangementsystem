@@ -178,4 +178,6 @@ const StudentExamMarks = ({ situation }) => {
     )
 }
 
+
+
 export default StudentExamMarks

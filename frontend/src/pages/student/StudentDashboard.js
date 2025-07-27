@@ -29,7 +29,7 @@ const StudentDashboard = () => {
 
     return (
         <>
-            <Box sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex', background: 'linear-gradient(120deg, #f8f9fc 0%, #e9e6f7 100%)' }}>
                 <CssBaseline />
                 <AppBar open={open} position='absolute'>
                     <Toolbar sx={{ pr: '24px' }}>

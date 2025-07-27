@@ -19,6 +19,7 @@ import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
 import Popup from '../../../components/Popup';
+import styled from 'styled-components';
 
 const ViewStudent = () => {
     const [showTab, setShowTab] = useState(false);
@@ -400,43 +401,73 @@ const ViewStudent = () => {
         <>
             {loading
                 ?
-                <>
+                <StyledLoading>
                     <div>Loading...</div>
-                </>
+                </StyledLoading>
                 :
-                <>
-                    <Box sx={{ width: '100%', typography: 'body1', }} >
-                        <TabContext value={value}>
-                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                <TabList onChange={handleChange} sx={{ position: 'fixed', width: '100%', bgcolor: 'background.paper', zIndex: 1 }}>
-                                    <Tab label="Details" value="1" />
-                                    <Tab label="Attendance" value="2" />
-                                    <Tab label="Marks" value="3" />
-                                </TabList>
-                            </Box>
-                            <Container sx={{ marginTop: "3rem", marginBottom: "4rem" }}>
-                                <TabPanel value="1">
-                                    <StudentDetailsSection />
-                                </TabPanel>
-                                <TabPanel value="2">
-                                    <StudentAttendanceSection />
-                                </TabPanel>
-                                <TabPanel value="3">
-                                    <StudentMarksSection />
-                                </TabPanel>
-                            </Container>
-                        </TabContext>
-                    </Box>
-                </>
+                <DetailsContainer>
+                    <StyledTabContext value={value}>
+                        <StyledTabHeader>
+                            <TabList onChange={handleChange} sx={{ bgcolor: 'background.paper', borderRadius: '1.2rem 1.2rem 0 0', boxShadow: '0 2px 12px 0 rgba(127,86,218,0.06)' }}>
+                                <Tab label="Details" value="1" />
+                                <Tab label="Attendance" value="2" />
+                                <Tab label="Marks" value="3" />
+                            </TabList>
+                        </StyledTabHeader>
+                        <StyledTabPanelContainer>
+                            <TabPanel value="1">
+                                <StudentDetailsSection />
+                            </TabPanel>
+                            <TabPanel value="2">
+                                <StudentAttendanceSection />
+                            </TabPanel>
+                            <TabPanel value="3">
+                                <StudentMarksSection />
+                            </TabPanel>
+                        </StyledTabPanelContainer>
+                    </StyledTabContext>
+                </DetailsContainer>
             }
             <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
-
         </>
     )
 }
 
 export default ViewStudent
 
+// --- Styled Components ---
+const DetailsContainer = styled.div`
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 0 24px 0;
+`;
+
+const StyledTabContext = styled(TabContext)`
+  width: 100%;
+`;
+
+const StyledTabHeader = styled(Box)`
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: transparent;
+`;
+
+const StyledTabPanelContainer = styled(Container)`
+  background: linear-gradient(120deg, #fff 80%, #f3f0fa 100%);
+  border-radius: 0 0 1.5rem 1.5rem;
+  box-shadow: 0 4px 24px 0 rgba(127,86,218,0.08);
+  padding: 2rem 1.5rem 2.5rem 1.5rem;
+  min-height: 350px;
+`;
+
+const StyledLoading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 350px;
+`;
 const styles = {
     attendanceButton: {
         marginLeft: "20px",

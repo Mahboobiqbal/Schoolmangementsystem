@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { IconButton, Box, Menu, MenuItem, ListItemIcon, Tooltip } from '@mui/material';
+import { IconButton, Box, Menu, MenuItem, ListItemIcon, Tooltip, Typography, CircularProgress } from '@mui/material';
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -17,13 +17,13 @@ import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
 import Popup from '../../../components/Popup';
 
 const ShowClasses = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { sclassesList, loading, error, getresponse } = useSelector((state) => state.sclass);
-  const { currentUser } = useSelector(state => state.user)
+  const { currentUser } = useSelector(state => state.user);
 
-  const adminID = currentUser._id
+  const adminID = currentUser._id;
 
   useEffect(() => {
     dispatch(getAllSclasses(adminID, "Sclass"));
@@ -37,8 +37,6 @@ const ShowClasses = () => {
   const [message, setMessage] = useState("");
 
   const deleteHandler = (deleteID, address) => {
-    console.log(deleteID);
-    console.log(address);
     setMessage("Sorry the delete function has been disabled for now.")
     setShowPopup(true)
     // dispatch(deleteUser(deleteID, address))
@@ -49,14 +47,14 @@ const ShowClasses = () => {
 
   const sclassColumns = [
     { id: 'name', label: 'Class Name', minWidth: 170 },
-  ]
+  ];
 
   const sclassRows = sclassesList && sclassesList.length > 0 && sclassesList.map((sclass) => {
     return {
       name: sclass.sclassName,
       id: sclass._id,
     };
-  })
+  });
 
   const SclassButtonHaver = ({ row }) => {
     const actions = [
@@ -65,9 +63,11 @@ const ShowClasses = () => {
     ];
     return (
       <ButtonContainer>
-        <IconButton onClick={() => deleteHandler(row.id, "Sclass")} color="secondary">
-          <DeleteIcon color="error" />
-        </IconButton>
+        <Tooltip title="Delete Class">
+          <IconButtonStyled onClick={() => deleteHandler(row.id, "Sclass")} color="secondary">
+            <DeleteIcon color="error" />
+          </IconButtonStyled>
+        </Tooltip>
         <BlueButton variant="contained"
           onClick={() => navigate("/Admin/classes/class/" + row.id)}>
           View
@@ -92,7 +92,7 @@ const ShowClasses = () => {
       <>
         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
           <Tooltip title="Add Students & Subjects">
-            <IconButton
+            <IconButtonStyled
               onClick={handleClick}
               size="small"
               sx={{ ml: 2 }}
@@ -100,9 +100,9 @@ const ShowClasses = () => {
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
             >
-              <h5>Add</h5>
+              <Typography variant="body2" sx={{ mr: 1, fontWeight: 600, color: "#7f56da" }}>Add</Typography>
               <SpeedDialIcon />
-            </IconButton>
+            </IconButtonStyled>
           </Tooltip>
         </Box>
         <Menu
@@ -112,14 +112,14 @@ const ShowClasses = () => {
           onClose={handleClose}
           onClick={handleClose}
           PaperProps={{
-            elevation: 0,
+            elevation: 2,
             sx: styles.styledPaper,
           }}
           transformOrigin={{ horizontal: 'right', vertical: 'top' }}
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-          {actions.map((action) => (
-            <MenuItem onClick={action.action}>
+          {actions.map((action, idx) => (
+            <MenuItem key={idx} onClick={action.action}>
               <ListItemIcon fontSize="small">
                 {action.icon}
               </ListItemIcon>
@@ -143,39 +143,94 @@ const ShowClasses = () => {
   ];
 
   return (
-    <>
-      {loading ?
-        <div>Loading...</div>
-        :
-        <>
-          {getresponse ?
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-              <GreenButton variant="contained" onClick={() => navigate("/Admin/addclass")}>
-                Add Class
-              </GreenButton>
-            </Box>
-            :
-            <>
-              {Array.isArray(sclassesList) && sclassesList.length > 0 &&
-                <TableTemplate buttonHaver={SclassButtonHaver} columns={sclassColumns} rows={sclassRows} />
-              }
-              <SpeedDialTemplate actions={actions} />
-            </>}
-        </>
-      }
+    <ClassesContainer>
+      <Header>
+        <Typography variant="h4" sx={{ fontWeight: 700, color: "#411d70", letterSpacing: 1 }}>
+          All Classes
+        </Typography>
+        <GreenButton variant="contained" onClick={() => navigate("/Admin/addclass")}>
+          Add Class
+        </GreenButton>
+      </Header>
+      <Card>
+        {loading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 200 }}>
+            <CircularProgress color="primary" />
+          </Box>
+        ) : (
+          <>
+            {Array.isArray(sclassesList) && sclassesList.length > 0 ? (
+              <TableTemplate buttonHaver={SclassButtonHaver} columns={sclassColumns} rows={sclassRows} />
+            ) : (
+              <Typography variant="body1" sx={{ color: "#888", textAlign: "center", py: 4 }}>
+                No classes found. Click "Add Class" to create your first class.
+              </Typography>
+            )}
+            <SpeedDialTemplate actions={actions} />
+          </>
+        )}
+      </Card>
       <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
-
-    </>
+    </ClassesContainer>
   );
 };
 
 export default ShowClasses;
 
+// Styled Components
+const ClassesContainer = styled.div`
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 0 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding: 0 1rem;
+`;
+
+const Card = styled.div`
+  background: linear-gradient(120deg, #fff 80%, #f3f0fa 100%);
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 24px 0 rgba(127,86,218,0.08);
+  padding: 2rem 1.5rem 2.5rem 1.5rem;
+  min-height: 350px;
+  position: relative;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+`;
+
+const IconButtonStyled = styled(IconButton)`
+  && {
+    background: #f8f7fc;
+    border-radius: 50%;
+    transition: background 0.2s, box-shadow 0.2s;
+    &:hover {
+      background: #ede7fa;
+      box-shadow: 0 2px 8px 0 rgba(127,86,218,0.10);
+    }
+  }
+`;
+
 const styles = {
   styledPaper: {
     overflow: 'visible',
-    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.18))',
     mt: 1.5,
+    borderRadius: '1rem',
+    minWidth: 180,
     '& .MuiAvatar-root': {
       width: 32,
       height: 32,
@@ -195,11 +250,4 @@ const styles = {
       zIndex: 0,
     },
   }
-}
-
-const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-`;
+};

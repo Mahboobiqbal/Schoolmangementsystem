@@ -79,6 +79,21 @@ const AdminRegisterPage = () => {
             <Grid container component="main" sx={{ height: '100vh' }}>
                 <CssBaseline />
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                    {/* Decorative blurred SVG circle */}
+                    <BlurCircleWrapper>
+                        <svg width="340" height="340" viewBox="0 0 340 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="170" cy="170" r="140"
+                                fill="url(#paint0_radial_1_1)" fillOpacity="0.7"/>
+                            <defs>
+                                <radialGradient id="paint0_radial_1_1" cx="0" cy="0" r="1" gradientTransform="translate(170 170) scale(140)" gradientUnits="userSpaceOnUse">
+                                    <stop stopColor="#43cea2"/>
+                                    <stop offset="0.7" stopColor="#1a73e8"/>
+                                    <stop offset="1" stopColor="#7f56da"/>
+                                </radialGradient>
+                            </defs>
+                        </svg>
+                    </BlurCircleWrapper>
+                    {/* End SVG */}
                     <Box
                         sx={{
                             my: 8,
@@ -86,18 +101,18 @@ const AdminRegisterPage = () => {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
+                            position: 'relative',
+                            zIndex: 1
                         }}
                     >
-                        <Typography variant="h4" sx={{ mb: 2, color: "#2c2143" }}>
+                        <Typography variant="h5" sx={{ mb: 1.5, color: "#2c2143", fontWeight: 700, letterSpacing: 0.5 }}>
                             Admin Register
                         </Typography>
-                        <Typography variant="h7">
-                            Create your own school by registering as an admin.
-                            <br />
-                            You will be able to add students and faculty and
-                            manage the system.
+                        <Typography variant="body2" sx={{ color: "#5b5b5b", mb: 1, textAlign: "center", fontSize: "0.98rem", lineHeight: 1.5 }}>
+                            Create your own school by registering as an admin.<br />
+                            You will be able to add students and faculty and manage the system.
                         </Typography>
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 2 }}>
+                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                             <TextField
                                 margin="normal"
                                 required
@@ -110,6 +125,8 @@ const AdminRegisterPage = () => {
                                 error={adminNameError}
                                 helperText={adminNameError && 'Name is required'}
                                 onChange={handleInputChange}
+                                inputProps={{ style: { fontSize: "0.98rem" } }}
+                                InputLabelProps={{ style: { fontSize: "0.98rem" } }}
                             />
                             <TextField
                                 margin="normal"
@@ -122,6 +139,8 @@ const AdminRegisterPage = () => {
                                 error={schoolNameError}
                                 helperText={schoolNameError && 'School name is required'}
                                 onChange={handleInputChange}
+                                inputProps={{ style: { fontSize: "0.98rem" } }}
+                                InputLabelProps={{ style: { fontSize: "0.98rem" } }}
                             />
                             <TextField
                                 margin="normal"
@@ -134,6 +153,8 @@ const AdminRegisterPage = () => {
                                 error={emailError}
                                 helperText={emailError && 'Email is required'}
                                 onChange={handleInputChange}
+                                inputProps={{ style: { fontSize: "0.98rem" } }}
+                                InputLabelProps={{ style: { fontSize: "0.98rem" } }}
                             />
                             <TextField
                                 margin="normal"
@@ -147,6 +168,8 @@ const AdminRegisterPage = () => {
                                 error={passwordError}
                                 helperText={passwordError && 'Password is required'}
                                 onChange={handleInputChange}
+                                inputProps={{ style: { fontSize: "0.98rem" } }}
+                                InputLabelProps={{ style: { fontSize: "0.98rem" } }}
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
@@ -164,23 +187,23 @@ const AdminRegisterPage = () => {
                             <Grid container sx={{ display: "flex", justifyContent: "space-between" }}>
                                 <FormControlLabel
                                     control={<Checkbox value="remember" color="primary" />}
-                                    label="Remember me"
+                                    label={<span style={{ fontSize: "0.95rem" }}>Remember me</span>}
                                 />
                             </Grid>
                             <LightPurpleButton
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
+                                sx={{ mt: 2, mb: 1.5, fontSize: "1rem", py: 1.2 }}
                             >
-                                {loader ? <CircularProgress size={24} color="inherit"/> : "Register"}
+                                {loader ? <CircularProgress size={22} color="inherit"/> : "Register"}
                             </LightPurpleButton>
                             <Grid container>
                                 <Grid>
-                                    Already have an account?
+                                    <span style={{ fontSize: "0.96rem" }}>Already have an account?</span>
                                 </Grid>
                                 <Grid item sx={{ ml: 2 }}>
-                                    <StyledLink to="/Adminlogin">
+                                    <StyledLink to="/Adminlogin" style={{ fontSize: "0.96rem" }}>
                                         Log in
                                     </StyledLink>
                                 </Grid>
@@ -214,4 +237,15 @@ const StyledLink = styled(Link)`
   margin-top: 9px;
   text-decoration: none;
   color: #7f56da;
+`;
+
+const BlurCircleWrapper = styled.div`
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 0;
+  filter: blur(48px);
+  pointer-events: none;
+  opacity: 0.7;
 `;

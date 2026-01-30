@@ -1,24 +1,72 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const complainSchema = new mongoose.Schema({
+const feedbackSchema = new mongoose.Schema(
+  {
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'student',
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      refPath: "userType",
+      required: true,
+    },
+    userType: {
+      type: String,
+      enum: ["learner", "faculty"],
+      default: "learner",
     },
     date: {
-        type: Date,
-        required: true
+      type: Date,
+      required: true,
+      default: Date.now,
     },
-    complaint: {
-        type: String,
-        required: true
+    feedbackType: {
+      type: String,
+      enum: ["Complaint", "Suggestion", "Query", "Grievance", "Appreciation"],
+      default: "Complaint",
     },
-    school: {
+    category: {
+      type: String,
+      enum: [
+        "Academic",
+        "Administrative",
+        "Infrastructure",
+        "Faculty",
+        "Technical",
+        "Other",
+      ],
+      default: "Other",
+    },
+    subject: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    priority: {
+      type: String,
+      enum: ["Low", "Medium", "High", "Urgent"],
+      default: "Medium",
+    },
+    status: {
+      type: String,
+      enum: ["Pending", "In Progress", "Resolved", "Closed", "Escalated"],
+      default: "Pending",
+    },
+    institution: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "admin",
+      required: true,
+    },
+    response: {
+      message: String,
+      respondedBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'admin',
-        required: true,
-    }
-});
+        ref: "admin",
+      },
+      respondedAt: Date,
+    },
+  },
+  { timestamps: true },
+);
 
-module.exports = mongoose.model("complain", complainSchema);
+module.exports = mongoose.model("feedback", feedbackSchema);

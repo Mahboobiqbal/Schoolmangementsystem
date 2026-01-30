@@ -1,10 +1,10 @@
 <h1 align="center">
-    SCHOOL MANAGEMENT SYSTEM
+    ACADEMIC MANAGEMENT SYSTEM
 </h1>
 
 <h3 align="center">
-Streamline school management, class organization, and add students and faculty.<br>
-Seamlessly track attendance, assess performance, and provide feedback. <br>
+Streamline academic institution management, program organization, and add learners and faculty.<br>
+Seamlessly track participation, assess performance, and provide feedback. <br>
 Access records, view marks, and communicate effortlessly.
 </h3>
 
@@ -15,21 +15,21 @@ Access records, view marks, and communicate effortlessly.
 
 # About
 
-The School Management System is a web-based application built using the MERN (MongoDB, Express.js, React.js, Node.js) stack. It aims to streamline school management, class organization, and facilitate communication between students, teachers, and administrators.
+The Academic Management System is a web-based application built using the MERN (MongoDB, Express.js, React.js, Node.js) stack. It aims to streamline academic institution management, program organization, and facilitate communication between learners, faculty, and administrators.
 
 ## Features
 
-- **User Roles:** The system supports three user roles: Admin, Teacher, and Student. Each role has specific functionalities and access levels.
+- **User Roles:** The system supports three user roles: Admin, Faculty, and Learner. Each role has specific functionalities and access levels.
 
-- **Admin Dashboard:** Administrators can add new students and teachers, create classes and subjects, manage user accounts, and oversee system settings.
+- **Admin Dashboard:** Administrators can add new learners and faculty, create programs and modules, manage user accounts, and oversee system settings.
 
-- **Attendance Tracking:** Teachers can easily take attendance for their classes, mark students as present or absent, and generate attendance reports.
+- **Participation Tracking:** Faculty can easily track participation for their programs, mark learners as present or absent, and generate participation reports.
 
-- **Performance Assessment:** Teachers can assess students' performance by providing marks and feedback. Students can view their marks and track their progress over time.
+- **Performance Assessment:** Faculty can assess learners' performance by providing marks and feedback. Learners can view their marks and track their progress over time.
 
-- **Data Visualization:** Students can visualize their performance data through interactive charts and tables, helping them understand their academic performance at a glance.
+- **Data Visualization:** Learners can visualize their performance data through interactive charts and tables, helping them understand their academic performance at a glance.
 
-- **Communication:** Users can communicate effortlessly through the system. Teachers can send messages to students and vice versa, promoting effective communication and collaboration.
+- **Communication:** Users can communicate effortlessly through the system. Faculty can send messages to learners and vice versa, promoting effective communication and collaboration.
 
 ## Technologies Used
 
@@ -54,7 +54,7 @@ Create a file called .env in the backend folder.
 Inside it write this :
 
 ```sh
-MONGO_URL = mongodb://127.0.0.1/school
+MONGO_URL = mongodb://127.0.0.1/academic
 ```
 If you are using MongoDB Compass you can use this database link but if you are using MongoDB Atlas then instead of this link write your own database link.
 

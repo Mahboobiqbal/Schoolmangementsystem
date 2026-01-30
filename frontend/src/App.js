@@ -1,53 +1,84 @@
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useSelector } from 'react-redux';
-import Homepage from './pages/Homepage';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import StudentDashboard from './pages/student/StudentDashboard';
-import TeacherDashboard from './pages/teacher/TeacherDashboard';
-import LoginPage from './pages/LoginPage';
-import AdminRegisterPage from './pages/admin/AdminRegisterPage';
-import ChooseUser from './pages/ChooseUser';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { useSelector } from "react-redux";
+import { ThemeProvider } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
+import theme from "./theme/theme";
+import Homepage from "./pages/Homepage";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import LearnerDashboard from "./pages/student/StudentDashboard";
+import FacultyDashboard from "./pages/teacher/TeacherDashboard";
+import LoginPage from "./pages/LoginPage";
+import AdminRegisterPage from "./pages/admin/AdminRegisterPage";
+import ChooseUser from "./pages/ChooseUser";
 
 const App = () => {
-  const { currentRole } = useSelector(state => state.user);
+  const { currentRole } = useSelector((state) => state.user);
 
   return (
-    <Router>
-      {currentRole === null &&
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/choose" element={<ChooseUser visitor="normal" />} />
-          <Route path="/chooseasguest" element={<ChooseUser visitor="guest" />} />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        {currentRole === null && (
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+            <Route path="/choose" element={<ChooseUser visitor="normal" />} />
+            <Route
+              path="/chooseasguest"
+              element={<ChooseUser visitor="guest" />}
+            />
 
-          <Route path="/Adminlogin" element={<LoginPage role="Admin" />} />
-          <Route path="/Studentlogin" element={<LoginPage role="Student" />} />
-          <Route path="/Teacherlogin" element={<LoginPage role="Teacher" />} />
+            <Route path="/Adminlogin" element={<LoginPage role="Admin" />} />
+            <Route
+              path="/Learnerlogin"
+              element={<LoginPage role="Learner" />}
+            />
+            <Route
+              path="/Facultylogin"
+              element={<LoginPage role="Faculty" />}
+            />
 
-          <Route path="/Adminregister" element={<AdminRegisterPage />} />
+            {/* Legacy routes for backward compatibility */}
+            <Route
+              path="/Studentlogin"
+              element={<LoginPage role="Learner" />}
+            />
+            <Route
+              path="/Teacherlogin"
+              element={<LoginPage role="Faculty" />}
+            />
 
-          <Route path='*' element={<Navigate to="/" />} />
-        </Routes>}
+            <Route path="/Adminregister" element={<AdminRegisterPage />} />
 
-      {currentRole === "Admin" &&
-        <>
-          <AdminDashboard />
-        </>
-      }
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        )}
 
-      {currentRole === "Student" &&
-        <>
-          <StudentDashboard />
-        </>
-      }
+        {currentRole === "Admin" && (
+          <>
+            <AdminDashboard />
+          </>
+        )}
 
-      {currentRole === "Teacher" &&
-        <>
-          <TeacherDashboard />
-        </>
-      }
-    </Router>
-  )
-}
+        {(currentRole === "Learner" || currentRole === "Student") && (
+          <>
+            <LearnerDashboard />
+          </>
+        )}
 
-export default App
+        {(currentRole === "Faculty" || currentRole === "Teacher") && (
+          <>
+            <FacultyDashboard />
+          </>
+        )}
+      </Router>
+    </ThemeProvider>
+  );
+};
+
+export default App;

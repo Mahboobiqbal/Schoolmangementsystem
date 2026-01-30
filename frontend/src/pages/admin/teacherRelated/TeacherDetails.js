@@ -1,64 +1,70 @@
-import React, { useEffect } from 'react';
-import { getTeacherDetails } from '../../../redux/teacherRelated/teacherHandle';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, Container, Typography } from '@mui/material';
+import React, { useEffect } from "react";
+import { getTeacherDetails } from "../../../redux/teacherRelated/teacherHandle";
+import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Container, Typography } from "@mui/material";
 
-const TeacherDetails = () => {
-    const navigate = useNavigate();
-    const params = useParams();
-    const dispatch = useDispatch();
-    const { loading, teacherDetails, error } = useSelector((state) => state.teacher);
+const FacultyDetails = () => {
+  const navigate = useNavigate();
+  const params = useParams();
+  const dispatch = useDispatch();
+  const {
+    loading,
+    teacherDetails: facultyDetails,
+    error,
+  } = useSelector((state) => state.teacher);
 
-    const teacherID = params.id;
+  const facultyID = params.id;
 
-    useEffect(() => {
-        dispatch(getTeacherDetails(teacherID));
-    }, [dispatch, teacherID]);
+  useEffect(() => {
+    dispatch(getTeacherDetails(facultyID));
+  }, [dispatch, facultyID]);
 
-    if (error) {
-        console.log(error);
-    }
+  if (error) {
+    console.log(error);
+  }
 
-    const isSubjectNamePresent = teacherDetails?.teachSubject?.subName;
+  const isModuleNamePresent = facultyDetails?.teachSubject?.subName;
 
-    const handleAddSubject = () => {
-        navigate(`/Admin/teachers/choosesubject/${teacherDetails?.teachSclass?._id}/${teacherDetails?._id}`);
-    };
-
-    return (
-        <>
-            {loading ? (
-                <div>Loading...</div>
-            ) : (
-                <Container>
-                    <Typography variant="h4" align="center" gutterBottom>
-                        Teacher Details
-                    </Typography>
-                    <Typography variant="h6" gutterBottom>
-                        Teacher Name: {teacherDetails?.name}
-                    </Typography>
-                    <Typography variant="h6" gutterBottom>
-                        Class Name: {teacherDetails?.teachSclass?.sclassName}
-                    </Typography>
-                    {isSubjectNamePresent ? (
-                        <>
-                            <Typography variant="h6" gutterBottom>
-                                Subject Name: {teacherDetails?.teachSubject?.subName}
-                            </Typography>
-                            <Typography variant="h6" gutterBottom>
-                                Subject Sessions: {teacherDetails?.teachSubject?.sessions}
-                            </Typography>
-                        </>
-                    ) : (
-                        <Button variant="contained" onClick={handleAddSubject}>
-                            Add Subject
-                        </Button>
-                    )}
-                </Container>
-            )}
-        </>
+  const handleAddModule = () => {
+    navigate(
+      `/Admin/faculty/choosemodule/${facultyDetails?.teachSclass?._id}/${facultyDetails?._id}`,
     );
+  };
+
+  return (
+    <>
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <Container>
+          <Typography variant="h4" align="center" gutterBottom>
+            Faculty Details
+          </Typography>
+          <Typography variant="h6" gutterBottom>
+            Faculty Name: {facultyDetails?.name}
+          </Typography>
+          <Typography variant="h6" gutterBottom>
+            Program Name: {facultyDetails?.teachSclass?.sclassName}
+          </Typography>
+          {isModuleNamePresent ? (
+            <>
+              <Typography variant="h6" gutterBottom>
+                Module Name: {facultyDetails?.teachSubject?.subName}
+              </Typography>
+              <Typography variant="h6" gutterBottom>
+                Module Sessions: {facultyDetails?.teachSubject?.sessions}
+              </Typography>
+            </>
+          ) : (
+            <Button variant="contained" onClick={handleAddModule}>
+              Add Module
+            </Button>
+          )}
+        </Container>
+      )}
+    </>
+  );
 };
 
-export default TeacherDetails;
+export default FacultyDetails;

@@ -1,119 +1,329 @@
-const router = require('express').Router();
+const router = require("express").Router();
 
-// const { adminRegister, adminLogIn, deleteAdmin, getAdminDetail, updateAdmin } = require('../controllers/admin-controller.js');
-
-const { adminRegister, adminLogIn, getAdminDetail} = require('../controllers/admin-controller.js');
-
-const { sclassCreate, sclassList, deleteSclass, deleteSclasses, getSclassDetail, getSclassStudents } = require('../controllers/class-controller.js');
-const { complainCreate, complainList } = require('../controllers/complain-controller.js');
-const { noticeCreate, noticeList, deleteNotices, deleteNotice, updateNotice } = require('../controllers/notice-controller.js');
+// Admin / Institution Controller
 const {
-    studentRegister,
-    studentLogIn,
-    getStudents,
-    getStudentDetail,
-    deleteStudents,
-    deleteStudent,
-    updateStudent,
-    studentAttendance,
-    deleteStudentsByClass,
-    updateExamResult,
-    clearAllStudentsAttendanceBySubject,
-    clearAllStudentsAttendance,
-    removeStudentAttendanceBySubject,
-    removeStudentAttendance } = require('../controllers/student_controller.js');
-const { subjectCreate, classSubjects, deleteSubjectsByClass, getSubjectDetail, deleteSubject, freeSubjectList, allSubjects, deleteSubjects } = require('../controllers/subject-controller.js');
-const { teacherRegister, teacherLogIn, getTeachers, getTeacherDetail, deleteTeachers, deleteTeachersByClass, deleteTeacher, updateTeacherSubject, teacherAttendance } = require('../controllers/teacher-controller.js');
+  adminRegister,
+  adminLogIn,
+  getAdminDetail,
+} = require("../controllers/admin-controller.js");
 
-// Admin
-router.post('/AdminReg', adminRegister);
-router.post('/AdminLogin', adminLogIn);
+// Program Controller (formerly Class)
+const {
+  programCreate,
+  programList,
+  deleteProgram,
+  deletePrograms,
+  getProgramDetail,
+  getProgramLearners,
+  updateProgram,
+  updateProgramCurriculum,
+  getProgramsByType,
+  getProgramStats,
+} = require("../controllers/program-controller.js");
 
-router.get("/Admin/:id", getAdminDetail)
-// router.delete("/Admin/:id", deleteAdmin)
+// Feedback Controller (formerly Complain)
+const {
+  feedbackCreate,
+  feedbackList,
+  getFeedbackByType,
+  getFeedbackByCategory,
+  getFeedbackByStatus,
+  getFeedbackDetail,
+  updateFeedbackStatus,
+  respondToFeedback,
+  deleteFeedback,
+  deleteFeedbacks,
+  getFeedbackStats,
+} = require("../controllers/feedback-controller.js");
 
-// router.put("/Admin/:id", updateAdmin)
+// Announcement Controller (formerly Notice)
+const {
+  announcementCreate,
+  announcementList,
+  deleteAnnouncements,
+  deleteAnnouncement,
+  updateAnnouncement,
+  getAnnouncementsByCategory,
+  getAnnouncementsByAudience,
+  getAnnouncementDetail,
+  deactivateAnnouncement,
+  getUrgentAnnouncements,
+} = require("../controllers/announcement-controller.js");
 
-// Student
+// Learner Controller (formerly Student)
+const {
+  learnerRegister,
+  learnerLogIn,
+  getLearners,
+  getLearnerDetail,
+  deleteLearners,
+  deleteLearner,
+  updateLearner,
+  learnerParticipation,
+  deleteLearnersByProgram,
+  updateAssessmentResult,
+  clearAllLearnersParticipationByModule,
+  clearAllLearnersParticipation,
+  removeLearnerParticipationByModule,
+  removeLearnerParticipation,
+  getLearnerTranscript,
+  getLearnerPerformance,
+} = require("../controllers/learner-controller.js");
 
-router.post('/StudentReg', studentRegister);
-router.post('/StudentLogin', studentLogIn)
+// Module Controller (formerly Subject)
+const {
+  moduleCreate,
+  programModules,
+  deleteModulesByProgram,
+  getModuleDetail,
+  deleteModule,
+  freeModuleList,
+  allModules,
+  deleteModules,
+  semesterModules,
+  updateModule,
+  updateModuleSyllabus,
+  updateModuleSchedule,
+  assignFacultyToModule,
+  getModulesByType,
+  getModuleEnrollment,
+} = require("../controllers/module-controller.js");
 
-router.get("/Students/:id", getStudents)
-router.get("/Student/:id", getStudentDetail)
+// Faculty Controller (formerly Teacher)
+const {
+  facultyRegister,
+  facultyLogIn,
+  getFaculty,
+  getFacultyDetail,
+  deleteAllFaculty,
+  deleteFacultyByProgram,
+  deleteFaculty,
+  updateFacultyModule,
+  allocateCourse,
+  removeCourseAllocation,
+  updateFacultySchedule,
+  updateFaculty,
+  getFacultyWorkload,
+} = require("../controllers/faculty-controller.js");
 
-router.delete("/Students/:id", deleteStudents)
-router.delete("/StudentsClass/:id", deleteStudentsByClass)
-router.delete("/Student/:id", deleteStudent)
+// Assessment Controller (new)
+const {
+  assessmentCreate,
+  assessmentList,
+  getAssessmentsByModule,
+  getAssessmentsByProgram,
+  getAssessmentDetail,
+  updateAssessment,
+  publishAssessment,
+  submitAssessment,
+  gradeSubmission,
+  getAssessmentStats,
+  deleteAssessment,
+  deleteAssessments,
+} = require("../controllers/assessment-controller.js");
 
-router.put("/Student/:id", updateStudent)
+// Academic Calendar Controller (new)
+const {
+  calendarCreate,
+  calendarList,
+  getCalendarDetail,
+  getCurrentCalendar,
+  addEvent,
+  updateEvent,
+  removeEvent,
+  addHoliday,
+  updateSchedule,
+  getUpcomingEvents,
+  getEventsByType,
+  deleteCalendar,
+  deleteCalendars,
+} = require("../controllers/calendar-controller.js");
 
-router.put('/UpdateExamResult/:id', updateExamResult)
+// ==================== ADMIN / INSTITUTION ROUTES ====================
+router.post("/AdminReg", adminRegister);
+router.post("/AdminLogin", adminLogIn);
+router.get("/Admin/:id", getAdminDetail);
 
-router.put('/StudentAttendance/:id', studentAttendance)
+// ==================== LEARNER ROUTES (formerly Student) ====================
+router.post("/LearnerReg", learnerRegister);
+router.post("/LearnerLogin", learnerLogIn);
 
-router.put('/RemoveAllStudentsSubAtten/:id', clearAllStudentsAttendanceBySubject);
-router.put('/RemoveAllStudentsAtten/:id', clearAllStudentsAttendance);
+router.get("/Learners/:id", getLearners);
+router.get("/Learner/:id", getLearnerDetail);
+router.get("/Learner/Transcript/:id", getLearnerTranscript);
+router.get("/Learner/Performance/:id", getLearnerPerformance);
 
-router.put('/RemoveStudentSubAtten/:id', removeStudentAttendanceBySubject);
-router.put('/RemoveStudentAtten/:id', removeStudentAttendance)
+router.delete("/Learners/:id", deleteLearners);
+router.delete("/LearnersProgram/:id", deleteLearnersByProgram);
+router.delete("/Learner/:id", deleteLearner);
 
-// Teacher
+router.put("/Learner/:id", updateLearner);
+router.put("/UpdateAssessmentResult/:id", updateAssessmentResult);
+router.put("/LearnerParticipation/:id", learnerParticipation);
 
-router.post('/TeacherReg', teacherRegister);
-router.post('/TeacherLogin', teacherLogIn)
+router.put(
+  "/RemoveAllLearnersModuleParticipation/:id",
+  clearAllLearnersParticipationByModule,
+);
+router.put(
+  "/RemoveAllLearnersParticipation/:id",
+  clearAllLearnersParticipation,
+);
+router.put(
+  "/RemoveLearnerModuleParticipation/:id",
+  removeLearnerParticipationByModule,
+);
+router.put("/RemoveLearnerParticipation/:id", removeLearnerParticipation);
 
-router.get("/Teachers/:id", getTeachers)
-router.get("/Teacher/:id", getTeacherDetail)
+// Legacy routes for backward compatibility
+router.post("/StudentReg", learnerRegister);
+router.post("/StudentLogin", learnerLogIn);
+router.get("/Students/:id", getLearners);
+router.get("/Student/:id", getLearnerDetail);
 
-router.delete("/Teachers/:id", deleteTeachers)
-router.delete("/TeachersClass/:id", deleteTeachersByClass)
-router.delete("/Teacher/:id", deleteTeacher)
+// ==================== FACULTY ROUTES (formerly Teacher) ====================
+router.post("/FacultyReg", facultyRegister);
+router.post("/FacultyLogin", facultyLogIn);
 
-router.put("/TeacherSubject", updateTeacherSubject)
+router.get("/Faculty/:id", getFaculty);
+router.get("/FacultyDetail/:id", getFacultyDetail);
+router.get("/FacultyWorkload/:id", getFacultyWorkload);
 
-router.post('/TeacherAttendance/:id', teacherAttendance)
+router.delete("/AllFaculty/:id", deleteAllFaculty);
+router.delete("/FacultyProgram/:id", deleteFacultyByProgram);
+router.delete("/Faculty/:id", deleteFaculty);
 
-// Notice
+router.put("/FacultyModule", updateFacultyModule);
+router.put("/Faculty/:id", updateFaculty);
+router.put("/FacultySchedule", updateFacultySchedule);
 
-router.post('/NoticeCreate', noticeCreate);
+router.post("/AllocateCourse", allocateCourse);
+router.put("/RemoveCourseAllocation", removeCourseAllocation);
 
-router.get('/NoticeList/:id', noticeList);
+// Legacy routes for backward compatibility
+router.post("/TeacherReg", facultyRegister);
+router.post("/TeacherLogin", facultyLogIn);
+router.get("/Teachers/:id", getFaculty);
+router.get("/Teacher/:id", getFacultyDetail);
 
-router.delete("/Notices/:id", deleteNotices)
-router.delete("/Notice/:id", deleteNotice)
+// ==================== ANNOUNCEMENT ROUTES (formerly Notice) ====================
+router.post("/AnnouncementCreate", announcementCreate);
+router.get("/Announcements/:id", announcementList);
+router.get("/Announcement/:id", getAnnouncementDetail);
+router.get(
+  "/AnnouncementsByCategory/:id/:category",
+  getAnnouncementsByCategory,
+);
+router.get(
+  "/AnnouncementsByAudience/:id/:audience",
+  getAnnouncementsByAudience,
+);
+router.get("/UrgentAnnouncements/:id", getUrgentAnnouncements);
 
-router.put("/Notice/:id", updateNotice)
+router.delete("/Announcements/:id", deleteAnnouncements);
+router.delete("/Announcement/:id", deleteAnnouncement);
+router.put("/Announcement/:id", updateAnnouncement);
+router.put("/DeactivateAnnouncement/:id", deactivateAnnouncement);
 
-// Complain
+// Legacy routes for backward compatibility
+router.post("/NoticeCreate", announcementCreate);
+router.get("/NoticeList/:id", announcementList);
 
-router.post('/ComplainCreate', complainCreate);
+// ==================== FEEDBACK ROUTES (formerly Complain) ====================
+router.post("/FeedbackCreate", feedbackCreate);
+router.get("/FeedbackList/:id", feedbackList);
+router.get("/Feedback/:id", getFeedbackDetail);
+router.get("/FeedbackByType/:id/:type", getFeedbackByType);
+router.get("/FeedbackByCategory/:id/:category", getFeedbackByCategory);
+router.get("/FeedbackByStatus/:id/:status", getFeedbackByStatus);
+router.get("/FeedbackStats/:id", getFeedbackStats);
 
-router.get('/ComplainList/:id', complainList);
+router.put("/FeedbackStatus/:id", updateFeedbackStatus);
+router.put("/RespondToFeedback/:id", respondToFeedback);
+router.delete("/Feedback/:id", deleteFeedback);
+router.delete("/Feedbacks/:id", deleteFeedbacks);
 
-// Sclass
+// Legacy routes for backward compatibility
+router.post("/ComplainCreate", feedbackCreate);
+router.get("/ComplainList/:id", feedbackList);
 
-router.post('/SclassCreate', sclassCreate);
+// ==================== PROGRAM ROUTES (formerly Sclass) ====================
+router.post("/ProgramCreate", programCreate);
+router.get("/Programs/:id", programList);
+router.get("/Program/:id", getProgramDetail);
+router.get("/Program/Learners/:id", getProgramLearners);
+router.get("/ProgramsByType/:id/:type", getProgramsByType);
+router.get("/ProgramStats/:id", getProgramStats);
 
-router.get('/SclassList/:id', sclassList);
-router.get("/Sclass/:id", getSclassDetail)
+router.put("/Program/:id", updateProgram);
+router.put("/ProgramCurriculum/:id", updateProgramCurriculum);
 
-router.get("/Sclass/Students/:id", getSclassStudents)
+router.delete("/Programs/:id", deletePrograms);
+router.delete("/Program/:id", deleteProgram);
 
-router.delete("/Sclasses/:id", deleteSclasses)
-router.delete("/Sclass/:id", deleteSclass)
+// Legacy routes for backward compatibility
+router.post("/SclassCreate", programCreate);
+router.get("/SclassList/:id", programList);
+router.get("/Sclass/:id", getProgramDetail);
+router.get("/Sclass/Students/:id", getProgramLearners);
 
-// Subject
+// ==================== MODULE ROUTES (formerly Subject) ====================
+router.post("/ModuleCreate", moduleCreate);
+router.get("/AllModules/:id", allModules);
+router.get("/ProgramModules/:id", programModules);
+router.get("/SemesterModules/:programId/:semester", semesterModules);
+router.get("/FreeModules/:id", freeModuleList);
+router.get("/Module/:id", getModuleDetail);
+router.get("/ModulesByType/:id/:type", getModulesByType);
+router.get("/ModuleEnrollment/:id", getModuleEnrollment);
 
-router.post('/SubjectCreate', subjectCreate);
+router.put("/Module/:id", updateModule);
+router.put("/ModuleSyllabus/:id", updateModuleSyllabus);
+router.put("/ModuleSchedule/:id", updateModuleSchedule);
+router.put("/AssignFaculty/:id", assignFacultyToModule);
 
-router.get('/AllSubjects/:id', allSubjects);
-router.get('/ClassSubjects/:id', classSubjects);
-router.get('/FreeSubjectList/:id', freeSubjectList);
-router.get("/Subject/:id", getSubjectDetail)
+router.delete("/Module/:id", deleteModule);
+router.delete("/Modules/:id", deleteModules);
+router.delete("/ModulesProgram/:id", deleteModulesByProgram);
 
-router.delete("/Subject/:id", deleteSubject)
-router.delete("/Subjects/:id", deleteSubjects)
-router.delete("/SubjectsClass/:id", deleteSubjectsByClass)
+// Legacy routes for backward compatibility
+router.post("/SubjectCreate", moduleCreate);
+router.get("/AllSubjects/:id", allModules);
+router.get("/ClassSubjects/:id", programModules);
+router.get("/FreeSubjectList/:id", freeModuleList);
+router.get("/Subject/:id", getModuleDetail);
+
+// ==================== ASSESSMENT ROUTES (new) ====================
+router.post("/AssessmentCreate", assessmentCreate);
+router.get("/Assessments/:id", assessmentList);
+router.get("/Assessment/:id", getAssessmentDetail);
+router.get("/AssessmentsByModule/:id", getAssessmentsByModule);
+router.get("/AssessmentsByProgram/:id", getAssessmentsByProgram);
+router.get("/AssessmentStats/:id", getAssessmentStats);
+
+router.put("/Assessment/:id", updateAssessment);
+router.put("/PublishAssessment/:id", publishAssessment);
+router.put("/SubmitAssessment/:id", submitAssessment);
+router.put("/GradeSubmission/:id", gradeSubmission);
+
+router.delete("/Assessment/:id", deleteAssessment);
+router.delete("/Assessments/:id", deleteAssessments);
+
+// ==================== ACADEMIC CALENDAR ROUTES (new) ====================
+router.post("/CalendarCreate", calendarCreate);
+router.get("/Calendars/:id", calendarList);
+router.get("/Calendar/:id", getCalendarDetail);
+router.get("/CurrentCalendar/:id", getCurrentCalendar);
+router.get("/UpcomingEvents/:id", getUpcomingEvents);
+router.get("/EventsByType/:id/:type", getEventsByType);
+
+router.put("/AddEvent/:id", addEvent);
+router.put("/UpdateEvent/:id", updateEvent);
+router.put("/RemoveEvent/:id", removeEvent);
+router.put("/AddHoliday/:id", addHoliday);
+router.put("/UpdateSchedule/:id", updateSchedule);
+
+router.delete("/Calendar/:id", deleteCalendar);
+router.delete("/Calendars/:id", deleteCalendars);
 
 module.exports = router;

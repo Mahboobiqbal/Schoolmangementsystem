@@ -44,8 +44,24 @@ const ViewModule = () => {
   const { classID, subjectID, programID, moduleID } = params;
 
   useEffect(() => {
-    dispatch(getSubjectDetails(subjectID || moduleID, "Subject"));
-    dispatch(getClassStudents(classID || programID));
+    const finalModuleID = subjectID || moduleID;
+    const finalProgramID = classID || programID;
+
+    if (
+      finalModuleID &&
+      finalModuleID !== "null" &&
+      finalModuleID !== "undefined"
+    ) {
+      dispatch(getSubjectDetails(finalModuleID, "Subject"));
+    }
+
+    if (
+      finalProgramID &&
+      finalProgramID !== "null" &&
+      finalProgramID !== "undefined"
+    ) {
+      dispatch(getClassStudents(finalProgramID));
+    }
   }, [dispatch, subjectID, classID, programID, moduleID]);
 
   if (error) {

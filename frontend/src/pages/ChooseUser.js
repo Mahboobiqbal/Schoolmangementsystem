@@ -17,7 +17,7 @@ import Popup from "../components/Popup";
 const ChooseUser = ({ visitor }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const password = "zxc";
+  const password = "password123"; // Updated test password
 
   const { status, currentUser, currentRole } = useSelector(
     (state) => state.user,
@@ -30,7 +30,7 @@ const ChooseUser = ({ visitor }) => {
   const navigateHandler = (user) => {
     if (user === "Admin") {
       if (visitor === "guest") {
-        const email = "yogendra@12";
+        const email = "admin@test.com";
         const fields = { email, password };
         setLoader(true);
         dispatch(loginUser(fields, user));
@@ -39,20 +39,20 @@ const ChooseUser = ({ visitor }) => {
       }
     } else if (user === "Learner") {
       if (visitor === "guest") {
-        const enrollmentId = "1";
-        const learnerName = "Dipesh Awasthi";
+        const enrollmentId = "L001";
+        const learnerName = "John Learner";
         const fields = { enrollmentId, learnerName, password };
         setLoader(true);
-        dispatch(loginUser(fields, user));
+        dispatch(loginUser(fields, "Learner"));
       } else {
         navigate("/Learnerlogin");
       }
     } else if (user === "Faculty") {
       if (visitor === "guest") {
-        const email = "tony@12";
+        const email = "professor@test.com";
         const fields = { email, password };
         setLoader(true);
-        dispatch(loginUser(fields, user));
+        dispatch(loginUser(fields, "Faculty"));
       } else {
         navigate("/Facultylogin");
       }

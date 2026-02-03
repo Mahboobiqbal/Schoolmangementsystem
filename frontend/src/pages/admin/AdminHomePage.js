@@ -141,13 +141,12 @@ const AdminHomePage = () => {
   );
   const { currentUser } = useSelector((state) => state.user);
 
-  const adminID = currentUser._id;
-
   useEffect(() => {
-    dispatch(getAllStudents(adminID));
-    dispatch(getAllSclasses(adminID, "Sclass"));
-    dispatch(getAllTeachers(adminID));
-  }, [adminID, dispatch]);
+    if (!currentUser?._id) return;
+    dispatch(getAllStudents(currentUser._id));
+    dispatch(getAllSclasses(currentUser._id, "Sclass"));
+    dispatch(getAllTeachers(currentUser._id));
+  }, [currentUser, dispatch]);
 
   const numberOfLearners = learnersList?.length || 0;
   const numberOfPrograms = programsList?.length || 0;

@@ -90,33 +90,63 @@ const semesterModules = async (req, res) => {
 
 const freeModuleList = async (req, res) => {
   try {
+    const programId = req.params.id;
+    console.log("Fetching free modules for program:", programId);
+
+    if (!programId || programId === "null" || programId === "undefined") {
+      console.error("Invalid program ID:", programId);
+      return res.status(400).json({ message: "Invalid program ID" });
+    }
+
+    // Now get only unassigned modules
     let modules = await Module.find({
-      programName: req.params.id,
-      faculty: { $exists: false },
-    });
+      programName: programId,
+      $or: [{ faculty: { $exists: false } }, { faculty: null }],
+    })
+      .populate("programName", "programName programCode")
+      .lean();
+
+    console.log("Found unassigned modules:", modules.length);
     if (modules.length > 0) {
       res.send(modules);
     } else {
       res.send({ message: "No unassigned modules found" });
     }
   } catch (err) {
-    res.status(500).json(err);
+    console.error("Error fetching free modules:", err);
+    res
+      .status(500)
+      .json({ message: "Error fetching modules", error: err.message });
   }
 };
 
 const getModuleDetail = async (req, res) => {
   try {
-    let module = await Module.findById(req.params.id)
+    const moduleId = req.params.id;
+    console.log("Fetching module details for ID:", moduleId);
+
+    if (!moduleId || moduleId === "null" || moduleId === "undefined") {
+      console.error("Invalid module ID:", moduleId);
+      return res.status(400).json({ message: "Invalid module ID" });
+    }
+
+    let module = await Module.findById(moduleId)
       .populate("programName", "programName programCode")
+      .populate("institution", "institutionName")
       .populate("faculty", "name email designation")
       .populate("prerequisites", "moduleName moduleCode");
+
+    console.log("Module found:", module ? "Yes" : "No");
     if (module) {
       res.send(module);
     } else {
-      res.send({ message: "No module found" });
+      res.status(404).json({ message: "No module found" });
     }
   } catch (err) {
-    res.status(500).json(err);
+    console.error("Error fetching module detail:", err);
+    res
+      .status(500)
+      .json({ message: "Error fetching module", error: err.message });
   }
 };
 

@@ -15,6 +15,7 @@ import Navbar from "../../components/layout/Navbar";
 // Icons
 import HomeIcon from "@mui/icons-material/Home";
 import SchoolIcon from "@mui/icons-material/School";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 import PeopleIcon from "@mui/icons-material/People";
 import PersonIcon from "@mui/icons-material/Person";
 import GradingIcon from "@mui/icons-material/Grading";
@@ -44,9 +45,15 @@ import ViewStudent from "./studentRelated/ViewStudent";
 import AddNotice from "./noticeRelated/AddNotice";
 import ShowNotices from "./noticeRelated/ShowNotices";
 
+// Module Related
+import ShowSubjects from "./subjectRelated/ShowSubjects";
+import SubjectForm from "./subjectRelated/SubjectForm";
+import ViewSubject from "./subjectRelated/ViewSubject";
+
 // Faculty Related
 import AddTeacher from "./teacherRelated/AddTeacher";
 import ChooseClass from "./teacherRelated/ChooseClass";
+import ChooseSubject from "./teacherRelated/ChooseSubject";
 import ShowTeachers from "./teacherRelated/ShowTeachers";
 import TeacherDetails from "./teacherRelated/TeacherDetails";
 
@@ -114,6 +121,12 @@ const AdminDashboard = () => {
           label: "Programs",
           path: "/Admin/programs",
           icon: <SchoolIcon />,
+        },
+        {
+          id: "modules",
+          label: "Modules",
+          path: "/Admin/modules",
+          icon: <MenuBookIcon />,
         },
         {
           id: "faculty",
@@ -319,6 +332,40 @@ const AdminDashboard = () => {
               element={<StudentExamMarks situation="Student" />}
             />
 
+            {/* Modules (formerly Subjects) */}
+            <Route path="/Admin/modules" element={<ShowSubjects />} />
+            <Route path="/Admin/subjects" element={<ShowSubjects />} />
+            <Route
+              path="/Admin/modules/module/:programID/:moduleID"
+              element={<ViewSubject />}
+            />
+            <Route
+              path="/Admin/subjects/subject/:classID/:subjectID"
+              element={<ViewSubject />}
+            />
+            <Route
+              path="/Admin/modules/chooseprogram"
+              element={<ChooseClass situation="Subject" />}
+            />
+            <Route
+              path="/Admin/subjects/chooseclass"
+              element={<ChooseClass situation="Subject" />}
+            />
+            <Route path="/Admin/addmodule/:id" element={<SubjectForm />} />
+            <Route path="/Admin/addsubject/:id" element={<SubjectForm />} />
+            <Route
+              path="/Admin/program/module/:programID/:moduleID"
+              element={<ViewSubject />}
+            />
+            <Route
+              path="/Admin/class/subject/:classID/:subjectID"
+              element={<ViewSubject />}
+            />
+            <Route
+              path="/Admin/module/learner/participation/:learnerID/:moduleID"
+              element={<StudentAttendance situation="Subject" />}
+            />
+
             {/* Faculty (formerly Teachers) */}
             <Route path="/Admin/faculty" element={<ShowTeachers />} />
             <Route path="/Admin/teachers" element={<ShowTeachers />} />
@@ -337,6 +384,22 @@ const AdminDashboard = () => {
             <Route
               path="/Admin/teachers/chooseclass"
               element={<ChooseClass situation="Teacher" />}
+            />
+            <Route
+              path="/Admin/faculty/choosemodule/:id"
+              element={<ChooseSubject situation="Norm" />}
+            />
+            <Route
+              path="/Admin/teachers/choosesubject/:id"
+              element={<ChooseSubject situation="Norm" />}
+            />
+            <Route
+              path="/Admin/faculty/choosemodule/:programID/:facultyID"
+              element={<ChooseSubject situation="Teacher" />}
+            />
+            <Route
+              path="/Admin/teachers/choosesubject/:classID/:teacherID"
+              element={<ChooseSubject situation="Teacher" />}
             />
             <Route
               path="/Admin/faculty/addfaculty/:id"

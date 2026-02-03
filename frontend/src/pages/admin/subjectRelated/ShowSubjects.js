@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getSubjectList } from "../../../redux/sclassRelated/sclassHandle";
-import { deleteUser } from "../../../redux/userRelated/userHandle";
-import PostAddIcon from "@mui/icons-material/PostAdd";
-import { Paper, Box, IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { Paper, Box, IconButton, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TableTemplate from "../../../components/TableTemplate";
-import { BlueButton, GreenButton } from "../../../components/buttonStyles";
-import SpeedDialTemplate from "../../../components/SpeedDialTemplate";
+import { BlueButton } from "../../../components/buttonStyles";
+import { PrimaryButton } from "../../../components/ui/Buttons";
+import { EmptyState } from "../../../components/ui";
 import Popup from "../../../components/Popup";
 
 const ShowModules = () => {
@@ -48,18 +48,24 @@ const ShowModules = () => {
   const moduleColumns = [
     { id: "subName", label: "Module Name", minWidth: 170 },
     { id: "sessions", label: "Sessions", minWidth: 170 },
-    { id: "sclassName", label: "Program", minWidth: 170 },
+    { id: "programName", label: "Program", minWidth: 170 },
   ];
 
-  const moduleRows = modulesList.map((module) => {
-    return {
-      subName: module.subName,
-      sessions: module.sessions,
-      sclassName: module.sclassName.sclassName,
-      sclassID: module.sclassName._id,
-      id: module._id,
-    };
-  });
+  const moduleRows =
+    modulesList && modulesList.length > 0
+      ? modulesList.map((module) => {
+          const programRef = module.programName || module.sclassName;
+          return {
+            subName: module.moduleName || module.subName || "N/A",
+            sessions: module.sessions || "N/A",
+            programName: programRef
+              ? programRef.programName || programRef.sclassName || "N/A"
+              : "N/A",
+            sclassID: programRef ? programRef._id : null,
+            id: module._id,
+          };
+        })
+      : [];
 
   const ModulesButtonHaver = ({ row }) => {
     return (
@@ -79,51 +85,57 @@ const ShowModules = () => {
     );
   };
 
-  const actions = [
-    {
-      icon: <PostAddIcon color="primary" />,
-      name: "Add New Module",
-      action: () => navigate("/Admin/modules/chooseprogram"),
-    },
-    {
-      icon: <DeleteIcon color="error" />,
-      name: "Delete All Modules",
-      action: () => deleteHandler(currentUser._id, "Subjects"),
-    },
-  ];
-
   return (
     <>
       {loading ? (
-        <div>Loading...</div>
+        <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+          <Typography>Loading modules...</Typography>
+        </Box>
       ) : (
         <>
           {response ? (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                marginTop: "16px",
-              }}
-            >
-              <GreenButton
-                variant="contained"
-                onClick={() => navigate("/Admin/modules/chooseprogram")}
-              >
-                Add Modules
-              </GreenButton>
-            </Box>
+            <EmptyState
+              title="No Modules Found"
+              description="Get started by adding your first module to the system"
+              action={
+                <PrimaryButton
+                  startIcon={<AddIcon />}
+                  onClick={() => navigate("/Admin/modules/chooseprogram")}
+                >
+                  Add Module
+                </PrimaryButton>
+              }
+            />
           ) : (
-            <Paper sx={{ width: "100%", overflow: "hidden" }}>
-              {Array.isArray(modulesList) && modulesList.length > 0 && (
-                <TableTemplate
-                  buttonHaver={ModulesButtonHaver}
-                  columns={moduleColumns}
-                  rows={moduleRows}
-                />
-              )}
-              <SpeedDialTemplate actions={actions} />
-            </Paper>
+            <Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: 3,
+                }}
+              >
+                <Typography variant="h5" fontWeight="600">
+                  Modules
+                </Typography>
+                <PrimaryButton
+                  startIcon={<AddIcon />}
+                  onClick={() => navigate("/Admin/modules/chooseprogram")}
+                >
+                  Add Module
+                </PrimaryButton>
+              </Box>
+              <Paper sx={{ width: "100%", overflow: "hidden" }}>
+                {Array.isArray(modulesList) && modulesList.length > 0 && (
+                  <TableTemplate
+                    buttonHaver={ModulesButtonHaver}
+                    columns={moduleColumns}
+                    rows={moduleRows}
+                  />
+                )}
+              </Paper>
+            </Box>
           )}
         </>
       )}

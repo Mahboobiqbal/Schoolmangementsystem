@@ -20,7 +20,6 @@ const ChooseModule = ({ situation }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [programID, setProgramID] = useState("");
   const [facultyID, setFacultyID] = useState("");
   const [loader, setLoader] = useState(false);
 
@@ -33,7 +32,6 @@ const ChooseModule = ({ situation }) => {
 
   useEffect(() => {
     if (situation === "Norm") {
-      setProgramID(params.id);
       const programId = params.id;
       dispatch(getTeacherFreeClassSubjects(programId));
     } else if (situation === "Teacher") {
@@ -43,33 +41,39 @@ const ChooseModule = ({ situation }) => {
         programID: programIdParam,
         facultyID: facultyIdParam,
       } = params;
-      setProgramID(classID || programIdParam);
       setFacultyID(teacherID || facultyIdParam);
       dispatch(getTeacherFreeClassSubjects(classID || programIdParam));
     }
-  }, [situation]);
+  }, [situation, params, dispatch]);
 
   if (loading) {
     return <div>Loading...</div>;
   } else if (response) {
     return (
-      <div>
-        <h1>Sorry all modules have faculty assigned already</h1>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginTop: "16px",
-          }}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "400px",
+          p: 4,
+        }}
+      >
+        <Typography variant="h5" gutterBottom color="text.secondary">
+          No Available Modules
+        </Typography>
+        <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+          There are no modules without faculty in this program. Please add
+          modules first or check if all modules already have faculty assigned.
+        </Typography>
+        <PurpleButton
+          variant="contained"
+          onClick={() => navigate("/Admin/modules/chooseprogram")}
         >
-          <PurpleButton
-            variant="contained"
-            onClick={() => navigate("/Admin/addmodule/" + programID)}
-          >
-            Add Modules
-          </PurpleButton>
-        </Box>
-      </div>
+          Add Modules
+        </PurpleButton>
+      </Box>
     );
   } else if (error) {
     console.log(error);
@@ -110,10 +114,10 @@ const ChooseModule = ({ situation }) => {
                       {index + 1}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {module.subName}
+                      {module.moduleName || module.subName || "N/A"}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {module.subCode}
+                      {module.moduleCode || module.subCode || "N/A"}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {situation === "Norm" ? (

@@ -3,36 +3,21 @@ const Faculty = require("../models/facultySchema.js");
 const Module = require("../models/moduleSchema.js");
 
 const facultyRegister = async (req, res) => {
-  const {
-    name,
-    email,
-    password,
-    role,
-    institution,
-    assignedModule,
-    assignedProgram,
-    designation,
-    department,
-    specialization,
-    qualification,
-  } = req.body;
+  const { name, email, password, role, institution } = req.body;
+
+  const assignedModule = req.body.assignedModule || req.body.subjectID;
+  const assignedProgram = req.body.assignedProgram || req.body.sclassID;
 
   try {
     const salt = await bcrypt.genSalt(10);
     const hashedPass = await bcrypt.hash(password, salt);
 
     const faculty = new Faculty({
-      name,
-      email,
+      ...req.body,
       password: hashedPass,
       role: role || "Faculty",
-      institution,
       assignedModule,
       assignedProgram,
-      designation: designation || "Instructor",
-      department,
-      specialization,
-      qualification,
     });
 
     const existingFacultyByEmail = await Faculty.findOne({ email });

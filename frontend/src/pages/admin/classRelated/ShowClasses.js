@@ -21,11 +21,11 @@ const ShowClasses = () => {
     getresponse,
   } = useSelector((state) => state.sclass);
   const { currentUser } = useSelector((state) => state.user);
-  const adminID = currentUser._id;
 
   useEffect(() => {
-    dispatch(getAllSclasses(adminID, "Sclass"));
-  }, [adminID, dispatch]);
+    if (!currentUser?._id) return;
+    dispatch(getAllSclasses(currentUser._id, "Sclass"));
+  }, [currentUser, dispatch]);
 
   const [showPopup, setShowPopup] = useState(false);
   const [message, setMessage] = useState("");
@@ -135,8 +135,14 @@ const ShowClasses = () => {
       <EmptyState
         title="No Programs Found"
         description="Get started by creating your first academic program"
-        actionLabel="Add Program"
-        onAction={() => navigate("/Admin/addprogram")}
+        action={
+          <PrimaryButton
+            startIcon={<AddIcon />}
+            onClick={() => navigate("/Admin/addprogram")}
+          >
+            Add Program
+          </PrimaryButton>
+        }
       />
     );
   }
@@ -168,8 +174,14 @@ const ShowClasses = () => {
         <EmptyState
           title="No Programs Found"
           description="Get started by creating your first academic program"
-          actionLabel="Add Program"
-          onAction={() => navigate("/Admin/addprogram")}
+          action={
+            <PrimaryButton
+              startIcon={<AddIcon />}
+              onClick={() => navigate("/Admin/addprogram")}
+            >
+              Add Program
+            </PrimaryButton>
+          }
         />
       )}
 

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Button,
   Grid,
   Box,
   Typography,
@@ -44,7 +43,6 @@ const LoginPage = ({ role }) => {
   // Map new roles to legacy roles for API compatibility
   const isLearnerRole = role === "Student" || role === "Learner";
   const isFacultyRole = role === "Teacher" || role === "Faculty";
-  const apiRole = isLearnerRole ? "Student" : isFacultyRole ? "Teacher" : role;
   const displayRole = isLearnerRole
     ? "Learner"
     : isFacultyRole
@@ -55,19 +53,19 @@ const LoginPage = ({ role }) => {
     event.preventDefault();
 
     if (isLearnerRole) {
-      const rollNum = event.target.enrollmentId.value;
-      const studentName = event.target.learnerName.value;
+      const enrollmentId = event.target.enrollmentId.value;
+      const learnerName = event.target.learnerName.value;
       const password = event.target.password.value;
 
-      if (!rollNum || !studentName || !password) {
-        if (!rollNum) setEnrollmentIdError(true);
-        if (!studentName) setLearnerNameError(true);
+      if (!enrollmentId || !learnerName || !password) {
+        if (!enrollmentId) setEnrollmentIdError(true);
+        if (!learnerName) setLearnerNameError(true);
         if (!password) setPasswordError(true);
         return;
       }
-      const fields = { rollNum, studentName, password };
+      const fields = { enrollmentId, learnerName, password };
       setLoader(true);
-      dispatch(loginUser(fields, apiRole));
+      dispatch(loginUser(fields, "Learner"));
     } else {
       const email = event.target.email.value;
       const password = event.target.password.value;
@@ -80,7 +78,7 @@ const LoginPage = ({ role }) => {
 
       const fields = { email, password };
       setLoader(true);
-      dispatch(loginUser(fields, apiRole));
+      dispatch(loginUser(fields, isFacultyRole ? "Faculty" : role));
     }
   };
 
@@ -93,24 +91,24 @@ const LoginPage = ({ role }) => {
   };
 
   const guestModeHandler = () => {
-    const password = "zxc";
+    const password = "password123";
 
     if (role === "Admin") {
-      const email = "yogendra@12";
+      const email = "admin@test.com";
       const fields = { email, password };
       setGuestLoader(true);
       dispatch(loginUser(fields, role));
     } else if (isLearnerRole) {
-      const rollNum = "1";
-      const studentName = "Dipesh Awasthi";
-      const fields = { rollNum, studentName, password };
+      const enrollmentId = "L001";
+      const learnerName = "John Learner";
+      const fields = { enrollmentId, learnerName, password };
       setGuestLoader(true);
-      dispatch(loginUser(fields, apiRole));
+      dispatch(loginUser(fields, "Learner"));
     } else if (isFacultyRole) {
-      const email = "tony@12";
+      const email = "professor@test.com";
       const fields = { email, password };
       setGuestLoader(true);
-      dispatch(loginUser(fields, apiRole));
+      dispatch(loginUser(fields, "Faculty"));
     }
   };
 
@@ -170,7 +168,7 @@ const LoginPage = ({ role }) => {
                   label="Enter your Enrollment ID"
                   name="enrollmentId"
                   autoComplete="off"
-                  type="number"
+                  type="text"
                   autoFocus
                   error={enrollmentIdError}
                   helperText={enrollmentIdError && "Enrollment ID is required"}

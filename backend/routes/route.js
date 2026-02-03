@@ -175,12 +175,6 @@ router.put(
 );
 router.put("/RemoveLearnerParticipation/:id", removeLearnerParticipation);
 
-// Legacy routes for backward compatibility
-router.post("/StudentReg", learnerRegister);
-router.post("/StudentLogin", learnerLogIn);
-router.get("/Students/:id", getLearners);
-router.get("/Student/:id", getLearnerDetail);
-
 // ==================== FACULTY ROUTES (formerly Teacher) ====================
 router.post("/FacultyReg", facultyRegister);
 router.post("/FacultyLogin", facultyLogIn);
@@ -199,12 +193,6 @@ router.put("/FacultySchedule", updateFacultySchedule);
 
 router.post("/AllocateCourse", allocateCourse);
 router.put("/RemoveCourseAllocation", removeCourseAllocation);
-
-// Legacy routes for backward compatibility
-router.post("/TeacherReg", facultyRegister);
-router.post("/TeacherLogin", facultyLogIn);
-router.get("/Teachers/:id", getFaculty);
-router.get("/Teacher/:id", getFacultyDetail);
 
 // ==================== ANNOUNCEMENT ROUTES (formerly Notice) ====================
 router.post("/AnnouncementCreate", announcementCreate);
@@ -262,24 +250,25 @@ router.delete("/Programs/:id", deletePrograms);
 router.delete("/Program/:id", deleteProgram);
 
 // Legacy routes for backward compatibility
-router.post("/SclassCreate", programCreate);
-router.get("/SclassList/:id", programList);
-router.get("/Sclass/:id", getProgramDetail);
-router.get("/Sclass/Students/:id", getProgramLearners);
+const {
+  sclassCreate,
+  sclassList,
+  getSclassDetail,
+  getSclassStudents,
+} = require("../controllers/class-controller.js");
+router.post("/SclassCreate", programCreate); // Use new Program schema
+router.get("/SclassList/:id", sclassList);
+router.get("/Sclass/:id", getSclassDetail);
+router.get("/Sclass/Students/:id", getSclassStudents);
 
-// ==================== MODULE ROUTES (formerly Subject) ====================
+// Module routes
 router.post("/ModuleCreate", moduleCreate);
-router.get("/AllModules/:id", allModules);
-router.get("/ProgramModules/:id", programModules);
-router.get("/SemesterModules/:programId/:semester", semesterModules);
+router.get("/Modules/:id", allModules);
 router.get("/FreeModules/:id", freeModuleList);
+router.get("/ProgramAllModules/:id", programModules); // Debug route - shows ALL modules for a program
 router.get("/Module/:id", getModuleDetail);
-router.get("/ModulesByType/:id/:type", getModulesByType);
-router.get("/ModuleEnrollment/:id", getModuleEnrollment);
 
-router.put("/Module/:id", updateModule);
-router.put("/ModuleSyllabus/:id", updateModuleSyllabus);
-router.put("/ModuleSchedule/:id", updateModuleSchedule);
+// ter.put("/ModuleSchedule/:id", updateModuleSchedule);
 router.put("/AssignFaculty/:id", assignFacultyToModule);
 
 router.delete("/Module/:id", deleteModule);
@@ -287,27 +276,35 @@ router.delete("/Modules/:id", deleteModules);
 router.delete("/ModulesProgram/:id", deleteModulesByProgram);
 
 // Legacy routes for backward compatibility
-router.post("/SubjectCreate", moduleCreate);
-router.get("/AllSubjects/:id", allModules);
-router.get("/ClassSubjects/:id", programModules);
-router.get("/FreeSubjectList/:id", freeModuleList);
-router.get("/Subject/:id", getModuleDetail);
-
-// ==================== ASSESSMENT ROUTES (new) ====================
-router.post("/AssessmentCreate", assessmentCreate);
-router.get("/Assessments/:id", assessmentList);
-router.get("/Assessment/:id", getAssessmentDetail);
-router.get("/AssessmentsByModule/:id", getAssessmentsByModule);
-router.get("/AssessmentsByProgram/:id", getAssessmentsByProgram);
-router.get("/AssessmentStats/:id", getAssessmentStats);
-
-router.put("/Assessment/:id", updateAssessment);
-router.put("/PublishAssessment/:id", publishAssessment);
-router.put("/SubmitAssessment/:id", submitAssessment);
-router.put("/GradeSubmission/:id", gradeSubmission);
-
+const {
+  subjectCreate,
+  allSubjects,
+  classSubjects,
+  freeSubjectList,
+  getSubjectDetail,
+} = require("../controllers/subject-controller.js");
+router.post("/SubjectCreate", subjectCreate);
+router.get("/AllSubjects/:id", allSubjects);
+router.get("/ClassSubjects/:id", classSubjects);
+router.get("/FreeSubjectList/:id", freeSubjectList);
+router.get("/Subject/:id", getSubjectDetail);
 router.delete("/Assessment/:id", deleteAssessment);
 router.delete("/Assessments/:id", deleteAssessments);
+
+// ==================== LEGACY ROUTES FOR LEARNER/FACULTY ====================
+// Map old Student endpoints to new Learner endpoints
+router.get("/Students/:id", getLearners);
+router.get("/Student/:id", getLearnerDetail);
+router.delete("/Student/:id", deleteLearner);
+router.delete("/Students/:id", deleteLearners);
+router.put("/Student/:id", updateLearner);
+
+// Map old Teacher endpoints to new Faculty endpoints
+router.get("/Teachers/:id", getFaculty);
+router.get("/Teacher/:id", getFacultyDetail);
+router.delete("/Teacher/:id", deleteFaculty);
+router.delete("/Teachers/:id", deleteAllFaculty);
+router.put("/Teacher/:id", updateFaculty);
 
 // ==================== ACADEMIC CALENDAR ROUTES (new) ====================
 router.post("/CalendarCreate", calendarCreate);

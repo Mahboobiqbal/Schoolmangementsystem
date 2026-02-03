@@ -44,24 +44,41 @@ const ViewLearnerParticipation = () => {
     (state) => state.user,
   );
 
-  useEffect(() => {
-    dispatch(getUserDetails(currentUser._id, "Student"));
-  }, [dispatch, currentUser._id]);
-
-  if (response) {
-    console.log(response);
-  } else if (error) {
-    console.log(error);
-  }
-
   const [moduleParticipation, setModuleParticipation] = useState([]);
   const [selectedSection, setSelectedSection] = useState("table");
+
+  useEffect(() => {
+    if (!currentUser?._id) return;
+    dispatch(getUserDetails(currentUser._id, "Student"));
+  }, [dispatch, currentUser]);
 
   useEffect(() => {
     if (userDetails) {
       setModuleParticipation(userDetails.attendance || []);
     }
   }, [userDetails]);
+
+  // Early return if currentUser is not loaded yet
+  if (!currentUser) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "400px",
+        }}
+      >
+        <Typography>Loading...</Typography>
+      </Box>
+    );
+  }
+
+  if (response) {
+    console.log(response);
+  } else if (error) {
+    console.log(error);
+  }
 
   const participationByModule = groupAttendanceBySubject(moduleParticipation);
 

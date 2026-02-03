@@ -14,18 +14,46 @@ import { useDispatch, useSelector } from "react-redux";
 const LearnerFeedback = () => {
   const [complaint, setComplaint] = useState("");
   const [date, setDate] = useState("");
+  const [loader, setLoader] = useState(false);
+  const [message, setMessage] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
 
   const dispatch = useDispatch();
 
   const { status, currentUser, error } = useSelector((state) => state.user);
 
-  const user = currentUser._id;
-  const school = currentUser.school._id;
-  const address = "Complain";
+  useEffect(() => {
+    if (status === "added") {
+      setLoader(false);
+      setShowPopup(true);
+      setMessage("Done Successfully");
+    } else if (error) {
+      setLoader(false);
+      setShowPopup(true);
+      setMessage("Failed");
+    }
+  }, [status, error]);
 
-  const [loader, setLoader] = useState(false);
-  const [message, setMessage] = useState("");
-  const [showPopup, setShowPopup] = useState(false);
+  // Early return if currentUser is not loaded yet
+  if (!currentUser) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "400px",
+          p: 4,
+        }}
+      >
+        <Typography>Loading...</Typography>
+      </Box>
+    );
+  }
+
+  const user = currentUser._id;
+  const school = currentUser.school?._id || currentUser.institution?._id;
+  const address = "Complain";
 
   const fields = {
     user,
@@ -39,18 +67,6 @@ const LearnerFeedback = () => {
     setLoader(true);
     dispatch(addStuff(fields, address));
   };
-
-  useEffect(() => {
-    if (status === "added") {
-      setLoader(false);
-      setShowPopup(true);
-      setMessage("Done Successfully");
-    } else if (error) {
-      setLoader(false);
-      setShowPopup(true);
-      setMessage("Network Error");
-    }
-  }, [status, error]);
 
   return (
     <>

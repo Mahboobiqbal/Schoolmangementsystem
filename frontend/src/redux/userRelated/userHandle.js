@@ -16,8 +16,20 @@ export const loginUser = (fields, role) => async (dispatch) => {
   dispatch(authRequest());
 
   try {
+    // Map role to correct endpoint
+    const endpointRole =
+      role === "Learner"
+        ? "Learner"
+        : role === "Faculty"
+          ? "Faculty"
+          : role === "Student"
+            ? "Learner"
+            : role === "Teacher"
+              ? "Faculty"
+              : role;
+
     const result = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}/${role}Login`,
+      `${process.env.REACT_APP_BASE_URL}/${endpointRole}Login`,
       fields,
       {
         headers: { "Content-Type": "application/json" },
@@ -41,16 +53,28 @@ export const registerUser = (fields, role) => async (dispatch) => {
   dispatch(authRequest());
 
   try {
+    // Map role to correct endpoint
+    const endpointRole =
+      role === "Learner"
+        ? "Learner"
+        : role === "Faculty"
+          ? "Faculty"
+          : role === "Student"
+            ? "Learner"
+            : role === "Teacher"
+              ? "Faculty"
+              : role;
+
     const result = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}/${role}Reg`,
+      `${process.env.REACT_APP_BASE_URL}/${endpointRole}Reg`,
       fields,
       {
         headers: { "Content-Type": "application/json" },
       },
     );
-    if (result.data.schoolName) {
+    if (result.data.schoolName || result.data.institutionName) {
       dispatch(authSuccess(result.data));
-    } else if (result.data.school) {
+    } else if (result.data.school || result.data.institution) {
       dispatch(stuffAdded());
     } else {
       dispatch(authFailed(result.data.message));
@@ -72,8 +96,16 @@ export const getUserDetails = (id, address) => async (dispatch) => {
   dispatch(getRequest());
 
   try {
+    // Map legacy address names to new endpoint names
+    const endpoint =
+      address === "Student"
+        ? "LearnerDetail"
+        : address === "Teacher"
+          ? "FacultyDetail"
+          : address;
+
     const result = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}/${address}/${id}`,
+      `${process.env.REACT_APP_BASE_URL}/${endpoint}/${id}`,
     );
     if (result.data) {
       dispatch(doneSuccess(result.data));

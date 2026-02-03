@@ -7,10 +7,25 @@ const learnerRegister = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPass = await bcrypt.hash(req.body.password, salt);
 
+    const enrollmentId = req.body.enrollmentId || req.body.rollNum;
+    const programName = req.body.programName || req.body.sclassName;
+
+    if (!enrollmentId) {
+      return res
+        .status(400)
+        .json({ message: "Enrollment ID (rollNum) is required" });
+    }
+
+    if (!programName) {
+      return res
+        .status(400)
+        .json({ message: "Program (sclassName) is required" });
+    }
+
     const existingLearner = await Learner.findOne({
-      enrollmentId: req.body.enrollmentId,
+      enrollmentId: enrollmentId,
       institution: req.body.adminID,
-      programName: req.body.programName,
+      programName: programName,
     });
 
     if (existingLearner) {
@@ -18,6 +33,8 @@ const learnerRegister = async (req, res) => {
     } else {
       const learner = new Learner({
         ...req.body,
+        enrollmentId: enrollmentId,
+        programName: programName,
         institution: req.body.adminID,
         password: hashedPass,
       });
@@ -35,9 +52,16 @@ const learnerRegister = async (req, res) => {
 
 const learnerLogIn = async (req, res) => {
   try {
+    const enrollmentId = req.body.enrollmentId || req.body.rollNum;
+    const learnerName = req.body.learnerName || req.body.name;
+
+    if (!enrollmentId || !learnerName) {
+      return res.send({ message: "Enrollment ID and Name are required" });
+    }
+
     let learner = await Learner.findOne({
-      enrollmentId: req.body.enrollmentId,
-      name: req.body.learnerName,
+      enrollmentId: enrollmentId,
+      name: { $regex: new RegExp("^" + learnerName + "$", "i") },
     });
     if (learner) {
       const validated = await bcrypt.compare(

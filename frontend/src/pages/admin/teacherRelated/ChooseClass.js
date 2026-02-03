@@ -28,7 +28,7 @@ const ChooseProgram = ({ situation }) => {
 
   const navigateHandler = (programID) => {
     if (situation === "Teacher") {
-      navigate("/Admin/faculty/addfaculty/" + programID);
+      navigate("/Admin/faculty/choosemodule/" + programID);
     } else if (situation === "Subject") {
       navigate("/Admin/addmodule/" + programID);
     }
@@ -41,7 +41,7 @@ const ChooseProgram = ({ situation }) => {
     programsList.length > 0 &&
     programsList.map((program) => {
       return {
-        name: program.sclassName,
+        name: program.programName || program.sclassName || "Unnamed Program",
         id: program._id,
       };
     });

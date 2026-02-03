@@ -27,8 +27,9 @@ const ShowTeachers = () => {
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
+    if (!currentUser?._id) return;
     dispatch(getAllTeachers(currentUser._id));
-  }, [currentUser._id, dispatch]);
+  }, [currentUser, dispatch]);
 
   const [showPopup, setShowPopup] = useState(false);
   const [message, setMessage] = useState("");

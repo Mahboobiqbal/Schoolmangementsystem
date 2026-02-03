@@ -93,6 +93,18 @@ const AdminRegisterPage = () => {
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <BlurCircleWrapper>
+            <svg width="340" height="340" viewBox="0 0 340 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="170" cy="170" r="140" fill="url(#paint0_radial_1_1)" fillOpacity="0.7"/>
+                <defs>
+                    <radialGradient id="paint0_radial_1_1" cx="0" cy="0" r="1" gradientTransform="translate(170 170) scale(140)" gradientUnits="userSpaceOnUse">
+                        <stop stopColor="#43cea2"/>
+                        <stop offset="0.7" stopColor="#1a73e8"/>
+                        <stop offset="1" stopColor="#7f56da"/> 
+                    </radialGradient>
+                </defs>
+            </svg>
+          </BlurCircleWrapper>
           <Box
             sx={{
               my: 8,
@@ -100,6 +112,8 @@ const AdminRegisterPage = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              position: 'relative',
+              zIndex: 1
             }}
           >
             <Typography variant="h4" sx={{ mb: 2, color: "#2c2143" }}>
@@ -241,4 +255,15 @@ const StyledLink = styled(Link)`
   margin-top: 9px;
   text-decoration: none;
   color: #7f56da;
+`;
+
+const BlurCircleWrapper = styled.div`
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 0;
+  filter: blur(48px);
+  pointer-events: none;
+  opacity: 0.7;
 `;

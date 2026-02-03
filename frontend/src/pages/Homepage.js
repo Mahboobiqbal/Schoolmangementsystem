@@ -4,22 +4,22 @@ import { Container, Grid, Box, Button } from "@mui/material";
 import styled from "styled-components";
 import Students from "../assets/students.svg";
 import { LightPurpleButton } from "../components/buttonStyles";
-import { styled as muiStyled } from '@mui/material/styles';
+import { styled as muiStyled } from "@mui/material/styles";
 
 const ModernButton = muiStyled(Button)({
-    background: "linear-gradient(90deg, #1a73e8 0%, #43cea2 100%)",        
-    color: "#fff",
-    fontWeight: 700,
-    fontSize: "1.1rem",
-    borderRadius: "12px",
-    padding: "12px 0",
-    boxShadow: "0 4px 16px rgba(26,115,232,0.08)",
-    textTransform: "none",
-    fontFamily: "'Inter', sans-serif",
-    '&:hover': {
-        background: "linear-gradient(90deg, #43cea2 0%, #1a73e8 100%)",    
-        boxShadow: "0 6px 24px rgba(26,115,232,0.12)",
-    },
+  background: "linear-gradient(90deg, #1a73e8 0%, #43cea2 100%)",
+  color: "#fff",
+  fontWeight: 700,
+  fontSize: "1.1rem",
+  borderRadius: "12px",
+  padding: "12px 0",
+  boxShadow: "0 4px 16px rgba(26,115,232,0.08)",
+  textTransform: "none",
+  fontFamily: "'Inter', sans-serif",
+  "&:hover": {
+    background: "linear-gradient(90deg, #43cea2 0%, #1a73e8 100%)",
+    boxShadow: "0 6px 24px rgba(26,115,232,0.12)",
+  },
 });
 
 const Homepage = () => {
@@ -61,15 +61,24 @@ const Homepage = () => {
                     borderColor: "#1a73e8",
                     fontWeight: 600,
                     borderRadius: "12px",
-                    fontFamily: "'Inter', sans-serif"
+                    fontFamily: "'Inter', sans-serif",
                   }}
                 >
                   Login as Guest
                 </Button>
               </StyledLink>
-              <StyledText style={{ fontSize: "1rem", color: "#6c757d", marginTop: 8 }}>
+              <StyledText
+                style={{ fontSize: "1rem", color: "#6c757d", marginTop: 8 }}
+              >
                 Don't have an account?{" "}
-                <Link to="/Adminregister" style={{ color: "#1a73e8", fontWeight: 600, textDecoration: "underline" }}>
+                <Link
+                  to="/Adminregister"
+                  style={{
+                    color: "#1a73e8",
+                    fontWeight: 600,
+                    textDecoration: "underline",
+                  }}
+                >
                   Sign up
                 </Link>
               </StyledText>
@@ -97,7 +106,7 @@ const StyledPaper = styled.div`
   height: auto;
   border-radius: 24px;
   background: #fff;
-  box-shadow: 0 8px 32px rgba(60,72,88,0.10);
+  box-shadow: 0 8px 32px rgba(60, 72, 88, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -116,7 +125,7 @@ const StyledBox = styled(Box)`
 const StyledTitle = styled.h1`
   font-size: 2.1rem;
   color: #1a237e;
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
   font-weight: 800;
   padding-top: 0;
   letter-spacing: 0.5px;
@@ -130,7 +139,7 @@ const StyledText = styled.p`
   margin-top: 12px;
   margin-bottom: 12px;
   font-size: 0.98rem;
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
   letter-spacing: 0.01em;
   line-height: 1.5;
   text-align: center;

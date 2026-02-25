@@ -14,6 +14,7 @@ const shimmer = keyframes`
   100% { background-position: 200% 0; }
 `;
 
+// eslint-disable-next-line no-unused-vars
 const pulse = keyframes`
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }

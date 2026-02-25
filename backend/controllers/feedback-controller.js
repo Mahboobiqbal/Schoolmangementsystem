@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Feedback = require("../models/complainSchema.js");
 
 const feedbackCreate = async (req, res) => {
@@ -178,13 +179,15 @@ const getFeedbackStats = async (req, res) => {
       status: "Resolved",
     });
 
+    const institutionObjId = new mongoose.Types.ObjectId(req.params.id);
+
     const byCategory = await Feedback.aggregate([
-      { $match: { institution: req.params.id } },
+      { $match: { institution: institutionObjId } },
       { $group: { _id: "$category", count: { $sum: 1 } } },
     ]);
 
     const byType = await Feedback.aggregate([
-      { $match: { institution: req.params.id } },
+      { $match: { institution: institutionObjId } },
       { $group: { _id: "$feedbackType", count: { $sum: 1 } } },
     ]);
 

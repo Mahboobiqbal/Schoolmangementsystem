@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start Frontend",
+			"type": "shell",
+			"command": "cd e:\\Projects\\MERN-School-Management-System-main\\MERN-School-Management-System-main\\frontend && set BROWSER=none && npm start",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Start Frontend Dev",
+			"type": "shell",
+			"command": "Set-Location 'e:\\Projects\\MERN-School-Management-System-main\\MERN-School-Management-System-main\\frontend' ; $env:BROWSER='none' ; npm start",
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}

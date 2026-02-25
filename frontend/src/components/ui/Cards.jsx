@@ -1,16 +1,8 @@
 import React from "react";
-import {
-  Box,
-  Typography,
-  Avatar,
-  IconButton,
-  Tooltip,
-  Skeleton,
-} from "@mui/material";
+import { Box, Typography, Avatar, Skeleton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CountUp from "react-countup";
 
 // Styled Components

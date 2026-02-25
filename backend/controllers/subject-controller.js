@@ -109,7 +109,7 @@ const deleteSubject = async (req, res) => {
     // Set the teachSubject field to null in teachers
     await Teacher.updateOne(
       { teachSubject: deletedSubject._id },
-      { $unset: { teachSubject: "" }, $unset: { teachSubject: null } },
+      { $unset: { teachSubject: 1 } },
     );
 
     // Remove the objects containing the deleted subject from students' examResult array
@@ -132,19 +132,22 @@ const deleteSubject = async (req, res) => {
 
 const deleteSubjects = async (req, res) => {
   try {
+    // First find the subjects to get their IDs before deleting
+    const subjectsToDelete = await Subject.find({ school: req.params.id });
+    const subjectIds = subjectsToDelete.map((subject) => subject._id);
+
     const deletedSubjects = await Subject.deleteMany({ school: req.params.id });
 
     // Set the teachSubject field to null in teachers
-    await Teacher.updateMany(
-      { teachSubject: { $in: deletedSubjects.map((subject) => subject._id) } },
-      { $unset: { teachSubject: "" }, $unset: { teachSubject: null } },
-    );
+    if (subjectIds.length > 0) {
+      await Teacher.updateMany(
+        { teachSubject: { $in: subjectIds } },
+        { $unset: { teachSubject: 1 } },
+      );
+    }
 
-    // Set examResult and attendance to null in all students
-    await Student.updateMany(
-      {},
-      { $set: { examResult: null, attendance: null } },
-    );
+    // Set examResult and attendance to empty arrays in all students
+    await Student.updateMany({}, { $set: { examResult: [], attendance: [] } });
 
     res.send(deletedSubjects);
   } catch (error) {
@@ -154,21 +157,24 @@ const deleteSubjects = async (req, res) => {
 
 const deleteSubjectsByClass = async (req, res) => {
   try {
+    // First find the subjects to get their IDs before deleting
+    const subjectsToDelete = await Subject.find({ sclassName: req.params.id });
+    const subjectIds = subjectsToDelete.map((subject) => subject._id);
+
     const deletedSubjects = await Subject.deleteMany({
       sclassName: req.params.id,
     });
 
     // Set the teachSubject field to null in teachers
-    await Teacher.updateMany(
-      { teachSubject: { $in: deletedSubjects.map((subject) => subject._id) } },
-      { $unset: { teachSubject: "" }, $unset: { teachSubject: null } },
-    );
+    if (subjectIds.length > 0) {
+      await Teacher.updateMany(
+        { teachSubject: { $in: subjectIds } },
+        { $unset: { teachSubject: 1 } },
+      );
+    }
 
-    // Set examResult and attendance to null in all students
-    await Student.updateMany(
-      {},
-      { $set: { examResult: null, attendance: null } },
-    );
+    // Set examResult and attendance to empty arrays in all students
+    await Student.updateMany({}, { $set: { examResult: [], attendance: [] } });
 
     res.send(deletedSubjects);
   } catch (error) {

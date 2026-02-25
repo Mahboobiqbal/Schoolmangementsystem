@@ -51,13 +51,15 @@ const StudentAttendance = ({ situation }) => {
       dispatch(getUserDetails(studentID || learnerID, "Student"));
       setChosenModuleId(subjectID || moduleID);
     }
-  }, [situation]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [situation, dispatch, params]);
 
   useEffect(() => {
     if (userDetails && userDetails.sclassName && situation === "Student") {
       dispatch(getSubjectList(userDetails.sclassName._id, "ClassSubjects"));
     }
-  }, [dispatch, userDetails]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, userDetails, situation]);
 
   const changeHandler = (event) => {
     const selectedModule = modulesList.find(

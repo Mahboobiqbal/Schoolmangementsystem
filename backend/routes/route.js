@@ -268,7 +268,9 @@ router.get("/FreeModules/:id", freeModuleList);
 router.get("/ProgramAllModules/:id", programModules); // Debug route - shows ALL modules for a program
 router.get("/Module/:id", getModuleDetail);
 
-// ter.put("/ModuleSchedule/:id", updateModuleSchedule);
+router.put("/Module/:id", updateModule);
+router.put("/ModuleSyllabus/:id", updateModuleSyllabus);
+router.put("/ModuleSchedule/:id", updateModuleSchedule);
 router.put("/AssignFaculty/:id", assignFacultyToModule);
 
 router.delete("/Module/:id", deleteModule);
@@ -288,6 +290,20 @@ router.get("/AllSubjects/:id", allSubjects);
 router.get("/ClassSubjects/:id", classSubjects);
 router.get("/FreeSubjectList/:id", freeSubjectList);
 router.get("/Subject/:id", getSubjectDetail);
+
+// ==================== ASSESSMENT ROUTES (new) ====================
+router.post("/AssessmentCreate", assessmentCreate);
+router.get("/Assessments/:id", assessmentList);
+router.get("/AssessmentsByModule/:id", getAssessmentsByModule);
+router.get("/AssessmentsByProgram/:id", getAssessmentsByProgram);
+router.get("/Assessment/:id", getAssessmentDetail);
+router.get("/AssessmentStats/:id", getAssessmentStats);
+
+router.put("/Assessment/:id", updateAssessment);
+router.put("/PublishAssessment/:id", publishAssessment);
+router.put("/SubmitAssessment/:id", submitAssessment);
+router.put("/GradeSubmission/:id", gradeSubmission);
+
 router.delete("/Assessment/:id", deleteAssessment);
 router.delete("/Assessments/:id", deleteAssessments);
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  deleteUser,
   getUserDetails,
   updateUser,
 } from "../../../redux/userRelated/userHandle";
@@ -50,7 +49,7 @@ import TableChartOutlinedIcon from "@mui/icons-material/TableChartOutlined";
 import Popup from "../../../components/Popup";
 
 const ViewLearner = () => {
-  const [showTab, setShowTab] = useState(false);
+  const [showTab, setShowTab] = useState(false); // eslint-disable-line no-unused-vars
 
   const navigate = useNavigate();
   const params = useParams();
@@ -84,7 +83,7 @@ const ViewLearner = () => {
 
   const [name, setName] = useState("");
   const [enrollmentId, setEnrollmentId] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(""); // eslint-disable-line no-unused-vars
   const [programName, setProgramName] = useState("");
   const [learnerInstitution, setLearnerInstitution] = useState("");
   const [moduleMarks, setModuleMarks] = useState("");
@@ -130,6 +129,7 @@ const ViewLearner = () => {
   }, [userDetails]);
 
   const submitHandler = (event) => {
+    // eslint-disable-line no-unused-vars
     event.preventDefault();
     dispatch(updateUser(fields, learnerID, address))
       .then(() => {

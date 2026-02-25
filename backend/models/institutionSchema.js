@@ -24,6 +24,11 @@ const institutionSchema = new mongoose.Schema(
       unique: true,
       required: true,
     },
+    // Legacy field for backward compatibility with old school-based controllers
+    schoolName: {
+      type: String,
+      sparse: true,
+    },
     institutionType: {
       type: String,
       enum: [

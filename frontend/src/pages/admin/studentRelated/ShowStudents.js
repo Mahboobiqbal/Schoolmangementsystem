@@ -25,7 +25,7 @@ const ShowStudents = () => {
   const {
     studentsList: learnersList,
     loading,
-    error,
+    error: _error, // eslint-disable-line no-unused-vars
     response,
   } = useSelector((state) => state.student);
   const { currentUser } = useSelector((state) => state.user);

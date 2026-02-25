@@ -28,7 +28,7 @@ const AddStudent = ({ situation }) => {
   const [name, setName] = useState("");
   const [enrollmentId, setEnrollmentId] = useState("");
   const [password, setPassword] = useState("");
-  const [programName, setProgramName] = useState("");
+  const [programName, setProgramName] = useState(""); // eslint-disable-line no-unused-vars
   const [selectedProgramId, setSelectedProgramId] = useState("");
 
   const adminID = currentUser._id;

@@ -6,12 +6,10 @@ import {
   getClassStudents,
   getSubjectList,
 } from "../../../redux/sclassRelated/sclassHandle";
-import { deleteUser } from "../../../redux/userRelated/userHandle";
 import { Box, Container, Typography, Tab, IconButton } from "@mui/material";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import { resetSubjects } from "../../../redux/sclassRelated/sclassSlice";
 import {
   BlueButton,
   GreenButton,

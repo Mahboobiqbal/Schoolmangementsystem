@@ -255,9 +255,10 @@ const ViewModule = () => {
         ) : (
           <GreenButton
             variant="contained"
-            onClick={() =>
-              navigate("/Admin/faculty/addfaculty/" + moduleDetails._id)
-            }
+            onClick={() => {
+              const modId = moduleDetails.moduleRef?._id || moduleDetails._id;
+              navigate("/Admin/faculty/addfaculty/" + modId);
+            }}
           >
             Add Module Faculty
           </GreenButton>

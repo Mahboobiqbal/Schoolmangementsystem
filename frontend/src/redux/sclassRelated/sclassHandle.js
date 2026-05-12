@@ -128,10 +128,8 @@ export const getSubjectDetails = (id, address) => async (dispatch) => {
   dispatch(getSubDetailsRequest());
 
   try {
-    // Map old names to new endpoints
-    const endpoint = address === "Subject" ? "Module" : address;
     const result = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}/${endpoint}/${id}`,
+      `${process.env.REACT_APP_BASE_URL}/${address}/${id}`,
     );
     if (result.data) {
       dispatch(getSubDetailsSuccess(result.data));

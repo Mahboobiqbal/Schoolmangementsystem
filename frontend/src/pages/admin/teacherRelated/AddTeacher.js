@@ -33,7 +33,7 @@ const AddFaculty = () => {
   useEffect(() => {
     if (moduleID && moduleID !== "undefined" && moduleID !== "null") {
       console.log("Loading module details for ID:", moduleID);
-      dispatch(getSubjectDetails(moduleID, "Subject"));
+      dispatch(getSubjectDetails(moduleID, "Module"));
     }
   }, [dispatch, moduleID]);
 

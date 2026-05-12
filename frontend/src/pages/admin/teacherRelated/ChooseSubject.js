@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
+  CircularProgress,
   Table,
   TableBody,
   TableContainer,
@@ -12,6 +13,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { getTeacherFreeClassSubjects } from "../../../redux/sclassRelated/sclassHandle";
 import { updateTeachSubject } from "../../../redux/teacherRelated/teacherHandle";
+import { resetSubjects } from "../../../redux/sclassRelated/sclassSlice";
 import { GreenButton, PurpleButton } from "../../../components/buttonStyles";
 import { StyledTableCell, StyledTableRow } from "../../../components/styles";
 
@@ -22,18 +24,20 @@ const ChooseModule = ({ situation }) => {
 
   const [facultyID, setFacultyID] = useState("");
   const [loader, setLoader] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   const {
     subjectsList: modulesList,
-    loading,
     error,
     response,
   } = useSelector((state) => state.sclass);
 
   useEffect(() => {
+    setDataLoaded(false);
+    dispatch(resetSubjects());
     if (situation === "Norm") {
       const programId = params.id;
-      dispatch(getTeacherFreeClassSubjects(programId));
+      dispatch(getTeacherFreeClassSubjects(programId)).then(() => setDataLoaded(true));
     } else if (situation === "Teacher") {
       const {
         classID,
@@ -42,12 +46,19 @@ const ChooseModule = ({ situation }) => {
         facultyID: facultyIdParam,
       } = params;
       setFacultyID(teacherID || facultyIdParam);
-      dispatch(getTeacherFreeClassSubjects(classID || programIdParam));
+      dispatch(getTeacherFreeClassSubjects(classID || programIdParam)).then(() => setDataLoaded(true));
     }
   }, [situation, params, dispatch]);
 
-  if (loading) {
-    return <div>Loading...</div>;
+  console.log("modulesList:", modulesList);
+  console.log("modulesList length:", modulesList?.length);
+
+  if (!dataLoaded) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
   } else if (response) {
     return (
       <Box
@@ -123,9 +134,13 @@ const ChooseModule = ({ situation }) => {
                       {situation === "Norm" ? (
                         <GreenButton
                           variant="contained"
-                          onClick={() =>
+                          onClick={() => {
+                            if (!module._id) {
+                              console.error("Module _id is undefined:", module);
+                              return;
+                            }
                             navigate("/Admin/faculty/addfaculty/" + module._id)
-                          }
+                          }}
                         >
                           Choose
                         </GreenButton>

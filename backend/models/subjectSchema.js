@@ -15,7 +15,7 @@ const subjectSchema = new mongoose.Schema({
     },
     sclassName: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'sclass',
+        ref: 'program',
         required: true,
     },
     school: {
@@ -25,6 +25,10 @@ const subjectSchema = new mongoose.Schema({
     teacher: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'teacher',
+    },
+    moduleRef: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'module',
     }
 }, { timestamps: true });
 

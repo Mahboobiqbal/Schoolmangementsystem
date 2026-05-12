@@ -48,3 +48,16 @@ export const updateTeachSubject = (teacherId, teachSubject) => async (dispatch) 
         dispatch(getError(error.response?.data?.message || error.message || 'Network Error'));
     }
 }
+
+export const deleteTeacher = (id) => async (dispatch) => {
+    dispatch(getRequest());
+
+    try {
+        await axios.delete(`${process.env.REACT_APP_BASE_URL}/Teacher/${id}`);
+        dispatch(postDone());
+        return true;
+    } catch (error) {
+        dispatch(getError(error.response?.data?.message || error.message || 'Network Error'));
+        return false;
+    }
+}

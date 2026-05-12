@@ -56,6 +56,7 @@ const sclassSlice = createSlice({
         },
         getError: (state, action) => {
             state.loading = false;
+            state.subloading = false;
             state.error = action.payload;
         },
         detailsSuccess: (state, action) => {

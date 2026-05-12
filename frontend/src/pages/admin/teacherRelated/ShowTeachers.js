@@ -13,7 +13,9 @@ import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddIcon from "@mui/icons-material/Add";
 import SchoolIcon from "@mui/icons-material/School";
-import { getAllTeachers, deleteTeacher } from "../../../redux/teacherRelated/teacherHandle";
+import { getAllTeachers } from "../../../redux/teacherRelated/teacherHandle";
+import { getRequest } from "../../../redux/teacherRelated/teacherSlice";
+import axios from "axios";
 import { DataTable, EmptyState } from "../../../components/ui";
 import { PrimaryButton } from "../../../components/ui/Buttons";
 import Popup from "../../../components/Popup";
@@ -37,11 +39,13 @@ const ShowTeachers = () => {
   const deleteHandler = async (deleteID, address) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this faculty member?");
     if (confirmDelete) {
-      const success = await dispatch(deleteTeacher(deleteID));
-      if (success) {
+      dispatch(getRequest());
+      try {
+        await axios.delete(`${process.env.REACT_APP_BASE_URL}/Teacher/${deleteID}`);
         dispatch(getAllTeachers(currentUser._id));
-      } else {
-        setMessage("Failed to delete faculty. Please try again.");
+      } catch (error) {
+        console.error("Delete error:", error);
+        setMessage("Failed to delete faculty: " + (error.response?.data?.message || error.message || "Unknown error"));
         setShowPopup(true);
       }
     }

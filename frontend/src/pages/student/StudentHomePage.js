@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
+  Container,
   Grid,
   Card,
   CardContent,
@@ -149,7 +150,7 @@ const StudentHomePage = () => {
   ];
 
   return (
-    <Box>
+    <Container maxWidth="xl" sx={{ py: 4 }}>
       {/* Page Header */}
       <PageHeader>
         <Typography variant="h4" fontWeight={700} gutterBottom>
@@ -314,7 +315,7 @@ const StudentHomePage = () => {
           </StatsCard>
         </Grid>
       </Grid>
-    </Box>
+    </Container>
   );
 };
 

@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Collapse,
+  Container,
   Paper,
   Table,
   TableBody,
@@ -105,103 +106,110 @@ const ViewLearnerParticipation = () => {
   const renderTableSection = () => {
     return (
       <>
-        <Typography variant="h4" align="center" gutterBottom>
-          Participation
-        </Typography>
-        <Table>
-          <TableHead>
-            <StyledTableRow>
-              <StyledTableCell>Module</StyledTableCell>
-              <StyledTableCell>Present</StyledTableCell>
-              <StyledTableCell>Total Sessions</StyledTableCell>
-              <StyledTableCell>Participation Percentage</StyledTableCell>
-              <StyledTableCell align="center">Actions</StyledTableCell>
-            </StyledTableRow>
-          </TableHead>
-          {Object.entries(participationByModule).map(
-            ([modName, { present, allData, subId, sessions }], index) => {
-              const moduleParticipationPercentage =
-                calculateSubjectAttendancePercentage(present, sessions);
+        <Box sx={{ mb: 3 }}>
+          <Table>
+            <TableHead>
+              <StyledTableRow>
+                <StyledTableCell>Module</StyledTableCell>
+                <StyledTableCell>Present</StyledTableCell>
+                <StyledTableCell>Total Sessions</StyledTableCell>
+                <StyledTableCell>Participation Percentage</StyledTableCell>
+                <StyledTableCell align="center">Actions</StyledTableCell>
+              </StyledTableRow>
+            </TableHead>
+            {Object.entries(participationByModule).map(
+              ([modName, { present, allData, subId, sessions }], index) => {
+                const moduleParticipationPercentage =
+                  calculateSubjectAttendancePercentage(present, sessions);
 
-              return (
-                <TableBody key={index}>
-                  <StyledTableRow>
-                    <StyledTableCell>{modName}</StyledTableCell>
-                    <StyledTableCell>{present}</StyledTableCell>
-                    <StyledTableCell>{sessions}</StyledTableCell>
-                    <StyledTableCell>
-                      {moduleParticipationPercentage}%
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <Button
-                        variant="contained"
-                        onClick={() => handleOpen(subId)}
+                return (
+                  <TableBody key={index}>
+                    <StyledTableRow>
+                      <StyledTableCell>{modName}</StyledTableCell>
+                      <StyledTableCell>{present}</StyledTableCell>
+                      <StyledTableCell>{sessions}</StyledTableCell>
+                      <StyledTableCell>
+                        {moduleParticipationPercentage}%
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <Button
+                          variant="contained"
+                          onClick={() => handleOpen(subId)}
+                        >
+                          {openStates[subId] ? (
+                            <KeyboardArrowUp />
+                          ) : (
+                            <KeyboardArrowDown />
+                          )}
+                          Details
+                        </Button>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                    <StyledTableRow>
+                      <StyledTableCell
+                        style={{ paddingBottom: 0, paddingTop: 0 }}
+                        colSpan={6}
                       >
-                        {openStates[subId] ? (
-                          <KeyboardArrowUp />
-                        ) : (
-                          <KeyboardArrowDown />
-                        )}
-                        Details
-                      </Button>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <StyledTableCell
-                      style={{ paddingBottom: 0, paddingTop: 0 }}
-                      colSpan={6}
-                    >
-                      <Collapse
-                        in={openStates[subId]}
-                        timeout="auto"
-                        unmountOnExit
-                      >
-                        <Box sx={{ margin: 1 }}>
-                          <Typography variant="h6" gutterBottom component="div">
-                            Participation Details
-                          </Typography>
-                          <Table size="small" aria-label="purchases">
-                            <TableHead>
-                              <StyledTableRow>
-                                <StyledTableCell>Date</StyledTableCell>
-                                <StyledTableCell align="right">
-                                  Status
-                                </StyledTableCell>
-                              </StyledTableRow>
-                            </TableHead>
-                            <TableBody>
-                              {allData.map((data, index) => {
-                                const date = new Date(data.date);
-                                const dateString =
-                                  date.toString() !== "Invalid Date"
-                                    ? date.toISOString().substring(0, 10)
-                                    : "Invalid Date";
-                                return (
-                                  <StyledTableRow key={index}>
-                                    <StyledTableCell component="th" scope="row">
-                                      {dateString}
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
-                                      {data.status}
-                                    </StyledTableCell>
-                                  </StyledTableRow>
-                                );
-                              })}
-                            </TableBody>
-                          </Table>
-                        </Box>
-                      </Collapse>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                </TableBody>
-              );
-            },
-          )}
-        </Table>
-        <div>
-          Overall Participation Percentage:{" "}
-          {overallParticipationPercentage.toFixed(2)}%
-        </div>
+                        <Collapse
+                          in={openStates[subId]}
+                          timeout="auto"
+                          unmountOnExit
+                        >
+                          <Box sx={{ margin: 1 }}>
+                            <Typography variant="h6" gutterBottom component="div">
+                              Participation Details
+                            </Typography>
+                            <Table size="small" aria-label="purchases">
+                              <TableHead>
+                                <StyledTableRow>
+                                  <StyledTableCell>Date</StyledTableCell>
+                                  <StyledTableCell align="right">
+                                    Status
+                                  </StyledTableCell>
+                                </StyledTableRow>
+                              </TableHead>
+                              <TableBody>
+                                {allData.map((data, index) => {
+                                  const date = new Date(data.date);
+                                  const dateString =
+                                    date.toString() !== "Invalid Date"
+                                      ? date.toISOString().substring(0, 10)
+                                      : "Invalid Date";
+                                  return (
+                                    <StyledTableRow key={index}>
+                                      <StyledTableCell component="th" scope="row">
+                                        {dateString}
+                                      </StyledTableCell>
+                                      <StyledTableCell align="right">
+                                        {data.status}
+                                      </StyledTableCell>
+                                    </StyledTableRow>
+                                  );
+                                })}
+                              </TableBody>
+                            </Table>
+                          </Box>
+                        </Collapse>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  </TableBody>
+                );
+              },
+            )}
+          </Table>
+        </Box>
+        <Box
+          sx={{
+            p: 3,
+            bgcolor: "#f3f4f6",
+            borderRadius: 2,
+            textAlign: "center",
+          }}
+        >
+          <Typography variant="h5" sx={{ fontWeight: 700, color: "#4F46E5" }}>
+            Overall Participation: {overallParticipationPercentage.toFixed(2)}%
+          </Typography>
+        </Box>
       </>
     );
   };
@@ -217,13 +225,24 @@ const ViewLearnerParticipation = () => {
   return (
     <>
       {loading ? (
-        <div>Loading...</div>
+        <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
+          <Typography>Loading...</Typography>
+        </Box>
       ) : (
-        <div>
+        <Container maxWidth="lg" sx={{ py: 4, pb: 10 }}>
           {moduleParticipation &&
           Array.isArray(moduleParticipation) &&
           moduleParticipation.length > 0 ? (
             <>
+              <Box sx={{ mb: 4 }}>
+                <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+                  📊 Participation Overview
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                  Track your attendance and participation across all modules
+                </Typography>
+              </Box>
+
               {selectedSection === "table" && renderTableSection()}
               {selectedSection === "chart" && renderChartSection()}
 
@@ -262,13 +281,13 @@ const ViewLearnerParticipation = () => {
               </Paper>
             </>
           ) : (
-            <>
-              <Typography variant="h6" gutterBottom component="div">
+            <Box sx={{ textAlign: "center", py: 8 }}>
+              <Typography variant="h6" color="text.secondary">
                 Currently You Have No Participation Details
               </Typography>
-            </>
+            </Box>
           )}
-        </div>
+        </Container>
       )}
     </>
   );

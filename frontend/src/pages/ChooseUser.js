@@ -146,13 +146,19 @@ const StyledContainer = styled.div`
 const StyledPaper = styled(Paper)`
   padding: 20px;
   text-align: center;
-  background-color: #1f1f38;
+  background: rgba(31, 31, 56, 0.8);
+  backdrop-filter: blur(8px);
   color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #2c2c6c;
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
     color: white;
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(79, 70, 229, 0.35);
   }
 `;
 

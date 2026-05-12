@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllNotices } from "../redux/noticeRelated/noticeHandle";
-import { Paper } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import TableViewTemplate from "./TableViewTemplate";
 
 const SeeNotice = () => {
@@ -48,18 +48,19 @@ const SeeNotice = () => {
     };
   });
   return (
-    <div style={{ marginTop: "50px", marginRight: "20px" }}>
+    <>
       {loading ? (
-        <div style={{ fontSize: "20px" }}>Loading...</div>
+        <Box sx={{ textAlign: "center", py: 4 }}>
+          <Typography>Loading announcements...</Typography>
+        </Box>
       ) : response ? (
-        <div style={{ fontSize: "20px" }}>
-          No Announcements to Show Right Now
-        </div>
+        <Box sx={{ textAlign: "center", py: 4 }}>
+          <Typography color="text.secondary">
+            No Announcements to Show Right Now
+          </Typography>
+        </Box>
       ) : (
         <>
-          <h3 style={{ fontSize: "30px", marginBottom: "40px" }}>
-            Announcements
-          </h3>
           <Paper sx={{ width: "100%", overflow: "hidden" }}>
             {Array.isArray(announcementsList) &&
               announcementsList.length > 0 && (
@@ -71,7 +72,7 @@ const SeeNotice = () => {
           </Paper>
         </>
       )}
-    </div>
+    </>
   );
 };
 

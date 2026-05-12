@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   Box,
   CircularProgress,
+  Container,
   Stack,
   TextField,
   Typography,
@@ -70,70 +71,66 @@ const LearnerFeedback = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          flex: "1 1 auto",
-          alignItems: "center",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
+      <Container maxWidth="md" sx={{ py: 4 }}>
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+            📝 Feedback
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Share your feedback or raise a concern
+          </Typography>
+        </Box>
         <Box
           sx={{
-            maxWidth: 550,
-            px: 3,
-            py: "100px",
-            width: "100%",
+            bgcolor: "background.paper",
+            borderRadius: 3,
+            border: "1px solid #e5e7eb",
+            p: 4,
           }}
         >
-          <div>
-            <Stack spacing={1} sx={{ mb: 3 }}>
-              <Typography variant="h4">Feedback</Typography>
-            </Stack>
-            <form onSubmit={submitHandler}>
-              <Stack spacing={3}>
-                <TextField
-                  fullWidth
-                  label="Select Date"
-                  type="date"
-                  value={date}
-                  onChange={(event) => setDate(event.target.value)}
-                  required
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-                <TextField
-                  fullWidth
-                  label="Write your feedback"
-                  variant="outlined"
-                  value={complaint}
-                  onChange={(event) => {
-                    setComplaint(event.target.value);
-                  }}
-                  required
-                  multiline
-                  maxRows={4}
-                />
-              </Stack>
-              <BlueButton
+          <form onSubmit={submitHandler}>
+            <Stack spacing={3}>
+              <TextField
                 fullWidth
-                size="large"
-                sx={{ mt: 3 }}
-                variant="contained"
-                type="submit"
-                disabled={loader}
-              >
-                {loader ? (
-                  <CircularProgress size={24} color="inherit" />
-                ) : (
-                  "Add"
-                )}
-              </BlueButton>
-            </form>
-          </div>
+                label="Select Date"
+                type="date"
+                value={date}
+                onChange={(event) => setDate(event.target.value)}
+                required
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <TextField
+                fullWidth
+                label="Write your feedback"
+                variant="outlined"
+                value={complaint}
+                onChange={(event) => {
+                  setComplaint(event.target.value);
+                }}
+                required
+                multiline
+                maxRows={4}
+              />
+            </Stack>
+            <BlueButton
+              fullWidth
+              size="large"
+              sx={{ mt: 3 }}
+              variant="contained"
+              type="submit"
+              disabled={loader}
+            >
+              {loader ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                "Submit"
+              )}
+            </BlueButton>
+          </form>
         </Box>
-      </Box>
+      </Container>
       <Popup
         message={message}
         setShowPopup={setShowPopup}

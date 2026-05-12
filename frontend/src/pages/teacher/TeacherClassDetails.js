@@ -30,11 +30,13 @@ const FacultyProgramDetails = () => {
   } = useSelector((state) => state.sclass);
 
   const { currentUser } = useSelector((state) => state.user);
-  const programID = currentUser.teachSclass?._id;
-  const moduleID = currentUser.teachSubject?._id;
+  const programID = currentUser?.teachSclass?._id;
+  const moduleID = currentUser?.teachSubject?._id;
 
   useEffect(() => {
-    dispatch(getClassStudents(programID));
+    if (programID) {
+      dispatch(getClassStudents(programID));
+    }
   }, [dispatch, programID]);
 
   if (error) {
@@ -160,6 +162,14 @@ const FacultyProgramDetails = () => {
       </>
     );
   };
+
+  if (!programID) {
+    return (
+      <Typography variant="body1">
+        No program is assigned to this faculty account yet.
+      </Typography>
+    );
+  }
 
   return (
     <>
